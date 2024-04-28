@@ -17,8 +17,8 @@ export interface Product {
     rating: number,
     price: number,
     discounted: boolean,
-    categories?: Category[] 
-    // API does not return categories for products within orders
+    categories: Category[] 
+    // API does not return categories for products within orders !
 }
 
 

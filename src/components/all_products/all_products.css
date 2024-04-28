@@ -1,0 +1,126 @@
+/* ----------------PRODUCT PAGE - SIMON ---------*/
+
+/* LEFT PANEL */
+
+.filter-panel {
+    min-width: 300px;
+    padding-left: 0%;
+}
+
+.filter-container {
+    display: flex;
+    flex-direction: column;
+    background-color:  #365486;
+    font-size: 20px;
+    min-width: 170px;
+    padding: 20px 10px 0px 10px;
+    border-bottom: 2px solid white;
+    color: white;
+}
+
+.category-checkbox {
+    width: 20px;
+    height: 20px;
+}
+
+.filter-input {
+    width: 50px;
+    height: 30px;
+    border-radius: 10px;
+    font-size: 15px;
+    border: 0px;
+    text-align: center;
+}
+
+.filter-header {
+    display: flex;
+    justify-content: space-between;
+        margin-bottom: 20px;
+}
+
+.collapsible-filter-inputs {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    justify-content: center;
+}
+
+.collapsed-filter-inputs {
+    display: none;
+}
+
+.toggle-button {
+    font-size: 30px;
+    transform: rotate(0deg);
+    transition: transform .1s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.toggle-button-transformed {
+    transform: rotate(180deg);
+}
+
+.range-filter {
+    display: flex;
+    align-items: center;
+    column-gap: 8px;
+}
+
+.filter-button-container {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+    background-color: #365486;
+    padding: 20px 10px 20px 10px;
+}
+
+.filter-button {
+    width: 200px;
+    border-radius: 10px;
+    border: 0px solid;
+    height: 42px;
+    font-size: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background-color: #87C4FF;
+    color: white;
+    font-family: 'Poppins';
+}
+
+.filter-button:hover {
+    cursor: pointer;
+    background-color: #65b0fb;
+}
+
+
+/* CENTER PANEL */
+
+.product-section {
+    background-color: rgb(241, 239, 239);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    align-items: center;
+    justify-items: center;
+}
+
+.filter-result {
+    padding-left: 30px;
+}
+
+
+ @media only screen and (max-width: 768px) {
+
+    main {
+        flex-direction: column;
+    }
+
+    .right-panel {
+        display: none;
+    }
+ }
+
