@@ -28,7 +28,7 @@ export default function RangeFilter({unit, step, min, max, setMin, setMax}: Rang
                     className="filter-input" 
                     type="number" 
                     name={`${unit}-max-input`}
-                    min={min} max={1000} 
+                    min={min} max={5000} 
                     id={`${unit}-max-input`}
                     placeholder="To"
                     value={max}
