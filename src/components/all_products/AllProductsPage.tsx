@@ -3,7 +3,7 @@ import { Category, Product } from "../../interfaces/interfaces";
 import FilterContainer from "./FilterContainer";
 import CategoryFilter from "./CategoryFilter";
 import RangeFilter from "./RangeFilter";
-import ProductCard from "../_common/ProductCard";
+import ProductDisplay from "./ProductDisplay";
 import "./all_products.css";
 
 export default function AllProductsPage() {
@@ -117,24 +117,8 @@ export default function AllProductsPage() {
                 </div>
             </div>
             
-            <div className="center-panel">
-                <h1 className="filter-result">{filteredProducts.length} products to hydrate yourself</h1>
-                <div className="product-section ">
-                    { filteredProducts.map(product => (
-                        <ProductCard 
-                            key={product.id}
-                            id={product.id} 
-                            name={product.name} 
-                            description={product.description} 
-                            picture_uri={product.picture_uri} 
-                            volume={product.volume} 
-                            amount={product.amount} 
-                            rating={product.rating} 
-                            price={product.price}>
-                        </ProductCard>
-                    ))}
-                </div>
-            </div>
+            <ProductDisplay products={filteredProducts}>
+            </ProductDisplay>
 
             <div className="right-panel">
             </div>
