@@ -1,15 +1,15 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Header from "./components/_common/Header";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Footer from "./components/_common/Footer";
+import Header from "./components/_common/Header";
 import Layout from "./components/_common/Layout";
-import HomePage from "./components/home/HomePage";
 import AllProductsPage from "./components/all_products/AllProductsPage";
-import SingleProductPage from "./components/single_product/SingleProductPage";
-import RegisterPage from "./components/register/RegisterPage";
+import CartPage from "./components/cart/CartPage";
+import HomePage from "./components/home/HomePage";
 import LoginPage from "./components/login/LoginPage";
 import ProfilePage from "./components/profile/ProfilePage";
-import CartPage from "./components/cart/CartPage";
-import "./styles.css"
+import RegisterPage from "./components/register/RegisterPage";
+import SingleProductPage from "./components/single_product/SingleProductPage";
+import "./styles.css";
 
 
 export default function App() {
@@ -20,13 +20,13 @@ export default function App() {
                 <Header userName={""} isLoggedIn={false}></Header>
                 <Layout>
                     <Routes>
-                        <Route element={<HomePage />} path="/" />                        
-                        <Route element={<AllProductsPage />} path="/all_products" /> 
-                        <Route element={<SingleProductPage/>} path="/single_product" /> 
-                        <Route element={<RegisterPage />} path="/register" /> 
-                        <Route element={<LoginPage />} path="/login" /> 
-                        <Route element={<ProfilePage />} path="/profile" /> 
-                        <Route element={<CartPage />} path="/cart" /> 
+                        <Route element={<HomePage />} path="/" />
+                        <Route element={<AllProductsPage />} path="/all_products" />
+                        <Route element={<SingleProductPage />} path="/products/:id" />
+                        <Route element={<RegisterPage />} path="/register" />
+                        <Route element={<LoginPage />} path="/login" />
+                        <Route element={<ProfilePage />} path="/profile" />
+                        <Route element={<CartPage />} path="/cart" />
                     </Routes>
                 </Layout>
                 <Footer></Footer>
