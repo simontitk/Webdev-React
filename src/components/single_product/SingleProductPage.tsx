@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams } from 'react-router-dom';
-
+import { Product, User } from "../../interfaces/interfaces";
 
 import "./single_product.css";
-
-import { Category, Product, User } from "../../interfaces/interfaces";
 
 import ProductCard from "../_common/ProductCard";
 
@@ -12,23 +10,9 @@ export default function SingleProductPage() {
 
     const productId: number = Number(useParams().id);
 
-    const rakosInitialFasszopok: Product = {
-        id: 1,
-        name: "",
-        description: "",
-        picture_uri: "",
-        volume: 1,
-        amount: 1,
-        rating: 1,
-        price: 1,
-        brand: "",
-        discounted: false,
-        categories: []
-    }
-
     const [product, setProduct] = useState<Product>();
     const [user, setUser] = useState<User>();
-    const [suggestions, setSuggestions] = useState<Product[]>([rakosInitialFasszopok, rakosInitialFasszopok, rakosInitialFasszopok]);
+    const [suggestions, setSuggestions] = useState<Product[]>();
     const [quantity, setQuantity] = useState(1);
 
 
@@ -67,23 +51,20 @@ export default function SingleProductPage() {
         return droplets;
     }
 
-    function fillSuggestedItems(): JSX.Element[] {
-        console.log(suggestions)
-        let suggestedItems = [];
-        for (let i = 0; i < 3; i++) {
-            suggestedItems.push(
-                <ProductCard
-                    id={suggestions[i].id}
-                    name={suggestions[i].name}
-                    description={suggestions[i].description}
-                    picture_uri={suggestions[i].picture_uri}
-                    volume={suggestions[i].volume}
-                    amount={suggestions[i].amount}
-                    rating={suggestions[i].rating}
-                    price={suggestions[i].price}></ProductCard>
-            )
-        }
-        return suggestedItems;
+    function fillSuggestedItems(): JSX.Element[] | undefined {
+        return suggestions && suggestions.map((suggestion, i) => (
+            <ProductCard
+                key={i}
+                id={suggestion.id}
+                name={suggestion.name}
+                description={suggestion.description}
+                picture_uri={suggestion.picture_uri}
+                volume={suggestion.volume}
+                amount={suggestion.amount}
+                rating={suggestion.rating}
+                price={suggestion.price}
+            />
+        ));
     }
 
     const handleIncrease = () => {
@@ -101,7 +82,7 @@ export default function SingleProductPage() {
                 <div className="product">
                     <div className="pictures-rating">
                         <div className="product-img-container">
-                            <img alt="product picture" className="product-image" id="picture" src={`http://localhost:3000/images/products/${product?.picture_uri}`} />
+                            <img alt="product picture" className="product-image" src={`http://localhost:3000/images/products/${product?.picture_uri}`} />
                         </div>
                         <div className="rating">
                             <p>Rating</p>
@@ -111,20 +92,20 @@ export default function SingleProductPage() {
                         </div>
                     </div>
                     <div className="product-details">
-                        <p className="single-product-name" id="name">{product?.name}<br />{product?.volume} ml</p>
+                        <p className="single-product-name">{product && product.name}<br />{product && product.volume} ml</p>
                         <div className="price">
-                            <p className="pricetag" id="price">{product?.price}</p>
+                            <p className="pricetag">{product && product.price}</p>
                             <p className="vat">incl. VAT</p>
                         </div>
-                        <p className="product-brand" id="brand">{product?.brand}</p>
-                        <p className="product-description hide-text" id="description">{product?.description}
+                        <p className="product-brand">{product && product.brand}</p>
+                        <p className="product-description hide-text">{product && product.description}
                         </p>
                     </div>
                     <div className="purchase-details">
                         <div className="delivery-details">
-                            <p>Free delivery to: {user?.city}</p>
-                            <p className="address" id="address">
-                                {user?.street}
+                            <p>Free delivery to:<br />{user && user.city}</p>
+                            <p className="address">
+                                {user && user.street}
                             </p>
                         </div>
                         <div className="quantity">
@@ -134,15 +115,15 @@ export default function SingleProductPage() {
                             <button onClick={handleDecrease}>-</button>
                         </div>
                         <div className="cart-share">
-                            <button className="button">Add to cart</button>
-                            <button className="button" onClick={() => { alert(`Thanks for sharing ${product?.name}`) }}>Share</button>
+                            <button className="button" onClick={() => { alert(`Faszomat az egesz frontendbe`) }}>Add to cart</button>
+                            <button className="button" onClick={() => { alert(`Thanks for sharing ${product && product.name}`) }}>Share</button>
                         </div>
                     </div>
                 </div>
                 <a href="/all_products"><section className="campaign">Get Hydrated Today!</section></a>
                 <div className="suggestions">
                     <section className="suggested-items">
-                        {fillSuggestedItems()}
+                        {suggestions && fillSuggestedItems()}
                     </section>
                 </div>
             </div >
