@@ -163,40 +163,24 @@
 }
 
 .address {
-    color: grey
+    color: grey;
 }
 
 .quantity {
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    flex-direction: row;
+    justify-content: center;
     align-items: center;
 }
 
-#quantity-input {
+.quantity input {
     border: none;
     background: none;
     font-size: 1em;
     color: inherit;
     text-align: center;
     width: 50px;
-    -webkit-appearance: none;
-    -moz-appearance: textfield;
-}
-
-#quantity-input::-webkit-inner-spin-button,
-#quantity-input::-webkit-outer-spin-button {
-    -webkit-appearance: none;
     margin: 0;
-}
-
-.quantity-modifier {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    padding-top: 0px;
-    padding-bottom: 0px;
 }
 
 .quantity p {
@@ -206,26 +190,22 @@
     padding-bottom: 0px;
 }
 
-.quantity-modifier button {
-    background-color: white;
+.quantity button {
     border: none;
     color: #000;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
-.quantity-modifier button:hover {
+.quantity button:hover {
     text-shadow: rgb(200, 200, 200) 0px 1px 1px;
 }
 
-.available {
-    color: gray;
-    font-size: small;
-}
 
-
-.share-like {
+.cart-share {
     display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
+    flex-direction: column;
+    align-items: center;
     padding: 10px;
 }
 

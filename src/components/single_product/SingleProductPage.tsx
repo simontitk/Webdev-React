@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { useParams } from 'react-router-dom';
+
 
 import "./single_product.css";
 
@@ -8,11 +10,12 @@ import ProductCard from "../_common/ProductCard";
 
 export default function SingleProductPage() {
 
-    const [productId, setProductId] = useState(24);
+    const productId: number = Number(useParams().id);
+
 
     const initialProduct: Product = {
         name: "",
-        id: productId,
+        id: 1,
         brand: "",
         description: "",
         picture_uri: "",
@@ -38,14 +41,8 @@ export default function SingleProductPage() {
 
     const [product, setProduct] = useState<Product>(initialProduct);
     const [user, setUser] = useState<User>(initialUser);
-
-    function fillRating(): JSX.Element[] {
-        let droplets = [];
-        for (let i = 1; i <= product.rating; i++) {
-            droplets.push(<img key={i} id={`rating${i}`} src="public/icons/droplet.png" alt="droplet" />);
-        }
-        return droplets;
-    }
+    const [suggestions, setSuggestions] = useState<Product[]>([initialProduct, initialProduct, initialProduct]);
+    const [quantity, setQuantity] = useState(1);
 
 
     useEffect(() => {
@@ -63,7 +60,51 @@ export default function SingleProductPage() {
             .catch(err => console.log(err));
     }, []);
 
+    useEffect(() => {
+        fetch('http://localhost:3000/products/')
+            .then(response => response.json())
+            .then((data: Product[]) => {
+                data.sort(() => Math.random() - 0.5);
+                const randomProducts = data.slice(0, 3);
+                setSuggestions(randomProducts);
+            })
+            .catch(err => console.log(err));
+    }, []);
 
+    function fillRating(): JSX.Element[] {
+        let droplets = [];
+        for (let i = 1; i <= product.rating; i++) {
+            droplets.push(<img key={i} id={`rating${i}`} src="/public/icons/droplet.png" alt="droplet" />);
+        }
+        return droplets;
+    }
+
+    function fillSuggestedItems(): JSX.Element[] {
+        console.log(suggestions)
+        let suggestedItems = [];
+        for (let i = 0; i < 3; i++) {
+            suggestedItems.push(
+                <ProductCard
+                    id={suggestions[i].id}
+                    name={suggestions[i].name}
+                    description={suggestions[i].description}
+                    picture_uri={suggestions[i].picture_uri}
+                    volume={suggestions[i].volume}
+                    amount={suggestions[i].amount}
+                    rating={suggestions[i].rating}
+                    price={suggestions[i].price}></ProductCard>
+            )
+        }
+        return suggestedItems;
+    }
+
+    const handleIncrease = () => {
+        setQuantity(prevQuantity => prevQuantity < 999 ? prevQuantity + 1 : 999);
+    };
+
+    const handleDecrease = () => {
+        setQuantity(prevQuantity => prevQuantity > 1 ? prevQuantity - 1 : 1);
+    };
 
     return (
         <>
@@ -77,7 +118,7 @@ export default function SingleProductPage() {
                         <div className="rating">
                             <p>Rating</p>
                             <div className="droplets">
-                                {product && fillRating()}
+                                {fillRating()}
                             </div>
                         </div>
                     </div>
@@ -91,30 +132,29 @@ export default function SingleProductPage() {
                         <p className="product-description hide-text" id="description">{product.description}
                         </p>
                     </div>
-                    <div className="purchase details">
+                    <div className="purchase-details">
                         <div className="delivery-details">
                             <p>Free delivery to: {user.city}</p>
                             <p className="address" id="address">
+                                {user.street}
                             </p>
                         </div>
                         <div className="quantity">
                             <p >Quantity</p>
-                            <div className="quantity-modifier">
-                                <button id="plus-quantity">+</button>
-                                <input id="quantity-input" type="number" min="1" max="999" value="1" />
-                                <button id="minus-quantity">-</button>
-                            </div>
-                            <p className="available">999 available</p>
+                            <button onClick={handleIncrease}>+</button>
+                            <p>{quantity}</p>
+                            <button onClick={handleDecrease}>-</button>
                         </div>
-                        <button className="button add-to-cart-button">Add to cart</button>
-                        <div className="share-like">
-                            <button className="button" id="share-button">Share</button>
+                        <div className="cart-share">
+                            <button className="button">Add to cart</button>
+                            <button className="button" onClick={() => { alert(`Thanks for sharing ${product.name}`) }}>Share</button>
                         </div>
                     </div>
                 </div>
-                <a href="./all_products"><section className="campaign">Get Hydrated Today!</section></a>
+                <a href="/all_products"><section className="campaign">Get Hydrated Today!</section></a>
                 <div className="suggestions">
                     <section className="suggested-items">
+                        {fillSuggestedItems()}
                     </section>
                 </div>
             </div >
