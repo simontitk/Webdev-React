@@ -16,7 +16,7 @@ export default function ProductCard({ id, name, description, picture_uri, volume
     return (
         <div className="product-card">
             <div className="rating-icon">
-                <img src="public/icons/droplet.png" alt="icon of a water droplet" width="50px"></img>
+                <img src="icons/droplet.png" alt="icon of a water droplet" width="50px"></img>
             </div>
             <div className="rating-number">
                     {rating}
@@ -24,7 +24,7 @@ export default function ProductCard({ id, name, description, picture_uri, volume
             <div className="product-display">
                 <div className="product-img-container">
                     <img 
-                        src={`http://localhost:3000/images/${picture_uri}`}
+                        src={`http://localhost:3000/images/products/${picture_uri}`}
                         alt={description}
                         height="260px"
                         className="product-image">

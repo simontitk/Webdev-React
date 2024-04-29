@@ -92,7 +92,7 @@ export default function AllProductsPage() {
 
                 <FilterContainer name="Rating">
                     <RangeFilter 
-                        unit={<img src="public/icons/droplet.png" alt="icon of a water droplet" width="28px"></img>}
+                        unit={<img src="icons/droplet.png" alt="icon of a water droplet" width="28px"></img>}
                         step={1} 
                         min={minRating} 
                         max={maxRating} 
