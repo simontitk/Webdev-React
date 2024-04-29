@@ -15,7 +15,7 @@ export default function FilterContainer({ name, children }: FilterContainerProps
             <div className="filter-header" onClick={() => setIsToggled(!isToggled)}>
                 {name}
                 <span className={`toggle-button ${isToggled ? "toggle-button-transformed" : ""}` }>
-                    <img src="public/icons/arrow.png" alt="Double arrow for toggling a panel" width="25px"></img>
+                    <img src="icons/arrow.png" alt="Double arrow for toggling a panel" width="25px"></img>
                 </span>
             </div>
             <div className={`collapsible-filter-inputs ${isToggled ? "collapsed-filter-inputs" : ""}`}>
