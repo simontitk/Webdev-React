@@ -1,4 +1,7 @@
-import "./product_card.css"
+import { useNavigate } from "react-router-dom";
+
+import "./product_card.css";
+
 
 interface ProductCardProps {
     id: number,
@@ -13,17 +16,23 @@ interface ProductCardProps {
 
 export default function ProductCard({ id, name, description, picture_uri, volume, amount, rating, price }: ProductCardProps) {
 
+    const navigate = useNavigate()
+    const handleClick = () => {
+        navigate(`/products/${id}`);
+        window.location.reload();
+    };
+
     return (
-        <div className="product-card">
+        <div className="product-card" onClick={handleClick}>
             <div className="rating-icon">
-                <img src="icons/droplet.png" alt="icon of a water droplet" width="50px"></img>
+                <img src="/public/icons/droplet.png" alt="icon of a water droplet" width="50px"></img>
             </div>
             <div className="rating-number">
-                    {rating}
+                {rating}
             </div>
             <div className="product-display">
                 <div className="product-img-container">
-                    <img 
+                    <img
                         src={`http://localhost:3000/images/products/${picture_uri}`}
                         alt={description}
                         height="260px"
