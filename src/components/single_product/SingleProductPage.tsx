@@ -12,36 +12,23 @@ export default function SingleProductPage() {
 
     const productId: number = Number(useParams().id);
 
-
-    const initialProduct: Product = {
-        name: "",
+    const rakosInitialFasszopok: Product = {
         id: 1,
-        brand: "",
+        name: "",
         description: "",
         picture_uri: "",
-        volume: 0,
-        amount: 0,
-        rating: 0,
-        price: 0,
+        volume: 1,
+        amount: 1,
+        rating: 1,
+        price: 1,
+        brand: "",
         discounted: false,
         categories: []
-    };
-
-    const initialUser: User = {
-        id: 1,
-        first_name: "",
-        last_name: "",
-        email: "",
-        phone: "",
-        city: "",
-        street: "",
-        password: "",
-        payment_method: ""
     }
 
-    const [product, setProduct] = useState<Product>(initialProduct);
-    const [user, setUser] = useState<User>(initialUser);
-    const [suggestions, setSuggestions] = useState<Product[]>([initialProduct, initialProduct, initialProduct]);
+    const [product, setProduct] = useState<Product>();
+    const [user, setUser] = useState<User>();
+    const [suggestions, setSuggestions] = useState<Product[]>([rakosInitialFasszopok, rakosInitialFasszopok, rakosInitialFasszopok]);
     const [quantity, setQuantity] = useState(1);
 
 
@@ -73,7 +60,8 @@ export default function SingleProductPage() {
 
     function fillRating(): JSX.Element[] {
         let droplets = [];
-        for (let i = 1; i <= product.rating; i++) {
+        const rating: number = product?.rating || 0;
+        for (let i = 1; i <= rating; i++) {
             droplets.push(<img key={i} id={`rating${i}`} src="/public/icons/droplet.png" alt="droplet" />);
         }
         return droplets;
@@ -113,7 +101,7 @@ export default function SingleProductPage() {
                 <div className="product">
                     <div className="pictures-rating">
                         <div className="product-img-container">
-                            <img alt="product picture" className="product-image" id="picture" src={`http://localhost:3000/images/products/${product.picture_uri}`} />
+                            <img alt="product picture" className="product-image" id="picture" src={`http://localhost:3000/images/products/${product?.picture_uri}`} />
                         </div>
                         <div className="rating">
                             <p>Rating</p>
@@ -123,20 +111,20 @@ export default function SingleProductPage() {
                         </div>
                     </div>
                     <div className="product-details">
-                        <p className="single-product-name" id="name">{product.name}<br />{product.volume} ml</p>
+                        <p className="single-product-name" id="name">{product?.name}<br />{product?.volume} ml</p>
                         <div className="price">
-                            <p className="pricetag" id="price">{product.price}</p>
+                            <p className="pricetag" id="price">{product?.price}</p>
                             <p className="vat">incl. VAT</p>
                         </div>
-                        <p className="product-brand" id="brand">{product.brand}</p>
-                        <p className="product-description hide-text" id="description">{product.description}
+                        <p className="product-brand" id="brand">{product?.brand}</p>
+                        <p className="product-description hide-text" id="description">{product?.description}
                         </p>
                     </div>
                     <div className="purchase-details">
                         <div className="delivery-details">
-                            <p>Free delivery to: {user.city}</p>
+                            <p>Free delivery to: {user?.city}</p>
                             <p className="address" id="address">
-                                {user.street}
+                                {user?.street}
                             </p>
                         </div>
                         <div className="quantity">
@@ -147,7 +135,7 @@ export default function SingleProductPage() {
                         </div>
                         <div className="cart-share">
                             <button className="button">Add to cart</button>
-                            <button className="button" onClick={() => { alert(`Thanks for sharing ${product.name}`) }}>Share</button>
+                            <button className="button" onClick={() => { alert(`Thanks for sharing ${product?.name}`) }}>Share</button>
                         </div>
                     </div>
                 </div>
