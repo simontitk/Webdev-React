@@ -1,4 +1,5 @@
 import "./profile.css";
+import {User} from "src\interfaces\interfaces.ts";
 
 export default function ProfilePage() {
 
@@ -21,8 +22,8 @@ export default function ProfilePage() {
 
 
     return (
-        <>
-        </>
-
+        <div>
+            <h1></h1>
+        </div>
     );
 }
