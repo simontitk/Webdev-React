@@ -1,43 +1,29 @@
-import { useEffect, useState } from "react";
+import { useContext } from "react";
 
+import { ProductContext } from "../../contexts";
 import ProductCard from "../_common/ProductCard";
 
-import { Product } from "../../interfaces/interfaces";
 
 export default function Suggestions() {
-    const [suggestions, setSuggestions] = useState<Product[]>();
 
-    useEffect(() => {
-        fetch('http://localhost:3000/products/')
-            .then(response => response.json())
-            .then((data: Product[]) => {
-                data.sort(() => Math.random() - 0.5);
-                const randomProducts = data.slice(0, 3);
-                setSuggestions(randomProducts);
-            })
-            .catch(err => console.log(err));
-    }, []);
-
-    function fillSuggestedItems(): JSX.Element[] | undefined {
-        return suggestions && suggestions.map((suggestion, i) => (
-            <ProductCard
-                key={i}
-                id={suggestion.id}
-                name={suggestion.name}
-                description={suggestion.description}
-                picture_uri={suggestion.picture_uri}
-                volume={suggestion.volume}
-                amount={suggestion.amount}
-                rating={suggestion.rating}
-                price={suggestion.price}
-            />
-        ));
-    }
+    const { products } = useContext(ProductContext)
 
     return (
         <div className="suggestions">
             <section className="suggested-items">
-                {suggestions && fillSuggestedItems()}
+                {products && products.slice(23, 26).map((product, i) => (
+                    <ProductCard
+                        key={i}
+                        id={product.id}
+                        name={product.name}
+                        description={product.description}
+                        picture_uri={product.picture_uri}
+                        volume={product.volume}
+                        amount={product.amount}
+                        rating={product.rating}
+                        price={product.price}
+                    />
+                ))}
             </section>
         </div>
     )
