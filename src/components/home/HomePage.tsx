@@ -1,32 +1,16 @@
-import { useEffect, useState } from "react";
+import { useContext } from "react";
 import { Category, Product } from "../../interfaces/interfaces";
 import CategoryCard from "./CategoryCard";
 import LandingSection from "./LandingSection";
 import ProductCard from "../_common/ProductCard";
 import FrontpageSection from "./FrontpageSection";
 import "./home.css";
+import { CategoryContext, ProductContext } from "../../contexts";
 
 export default function HomePage() {
 
-    const [products, setProducts] = useState<Product[]>([]);
-    const [categories, setCategories] = useState<Category[]>([]);
-
-
-    useEffect(() =>{
-        fetch("http://localhost:3000/products/")
-            .then(response => response.json())
-            .then((data: Product[]) => setProducts(data))
-            .catch(err => console.log(err))
-    }, []);
-
-
-    useEffect(() => {
-        fetch("http://localhost:3000/categories/")
-            .then(response => response.json())
-            .then((data: Category[]) => setCategories(data))
-            .catch(err => console.log(err));
-    }, []);
-
+    const { products } = useContext(ProductContext);
+    const { categories } = useContext(CategoryContext);
 
     return (
         <>
