@@ -1,6 +1,5 @@
-import { useContext, useState } from "react";
+import { useEffect, useState } from "react";
 import { Category, Product } from "../../interfaces/interfaces";
-import { CategoryContext, ProductContext, SelectedCategoryContext, SelectedProductContext } from "../../contexts";
 import FilterContainer from "./FilterContainer";
 import CategoryFilter from "./CategoryFilter";
 import RangeFilter from "./RangeFilter";
@@ -9,10 +8,11 @@ import "./all_products.css";
 
 export default function AllProductsPage() {
 
-    const { products } = useContext(ProductContext);
-    const { selectedProducts, setSelectedProducts } = useContext(SelectedProductContext);
-    const { categories } = useContext(CategoryContext);
-    const { selectedCategories, setSelectedCategories } = useContext(SelectedCategoryContext);
+    const [products, setProducts] = useState<Product[]>([]);
+    const [filteredProducts, setFilteredProducts] = useState<Product[]>(products);
+
+    const [categories, setCategories] = useState<Category[]>([]);
+    const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
 
     const [minPrice, setMinPrice] = useState<number>(0);
     const [maxPrice, setMaxPrice] = useState<number>(1000);
@@ -32,13 +32,29 @@ export default function AllProductsPage() {
             p.rating <= maxRating &&
             p.categories.some(category => selectedCategories.includes(category.id))
         ));
-        setSelectedProducts(temp);
+        setFilteredProducts(temp);
     };
 
 
     function resetFilter(): void {
-        setSelectedProducts(products);
+        setFilteredProducts(products);
     }
+
+
+    useEffect(() => {
+        fetch("http://localhost:3000/products/")
+            .then(respone => respone.json())
+            .then((data: Product[]) => {setProducts(data); setFilteredProducts(data)})
+            .catch(err => console.log(err));
+    }, []);
+
+    useEffect(() => {
+        fetch("http://localhost:3000/categories/")
+            .then(respone => respone.json())
+            .then((data: Category[]) => {setCategories(data); setSelectedCategories(data.map(category => category.id))})
+            .catch(err => console.log(err));
+    }, []);
+
 
     return (
         <>
@@ -101,7 +117,7 @@ export default function AllProductsPage() {
                 </div>
             </div>
             
-            <ProductDisplay products={selectedProducts}>
+            <ProductDisplay products={filteredProducts}>
             </ProductDisplay>
 
             <div className="right-panel">

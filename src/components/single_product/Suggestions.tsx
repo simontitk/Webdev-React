@@ -1,6 +1,6 @@
 import { useContext } from "react";
 
-import { ProductContext } from "../../contexts";
+import { ProductContext } from "../../GlobalContext";
 import ProductCard from "../_common/ProductCard";
 
 
