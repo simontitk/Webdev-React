@@ -71,9 +71,9 @@ export default function PurchaseDetails() {
                 <div>
                     <div className="quantity">
                         <p >Quantity</p>
-                        <button onClick={handleIncrease}>+</button>
-                        <p className="quantity-counter">{quantity}</p>
                         <button onClick={handleDecrease}>-</button>
+                        <p className="quantity-counter">{quantity}</p>
+                        <button onClick={handleIncrease}>+</button>
                     </div>
                     <div className="cart-share">
                         <button className="button" onClick={addToCart}>Add to cart</button>
