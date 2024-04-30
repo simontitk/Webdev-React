@@ -25,6 +25,40 @@ export default function PurchaseDetails() {
         setQuantity(prevQuantity => prevQuantity > 1 ? prevQuantity - 1 : 1);
     };
 
+    interface cartItem {
+        pid: number,
+        quantity: number
+    }
+
+    async function addToCart(): Promise<void> {
+        if (!product || !quantity) {
+            return;
+        }
+        const url = `http://localhost:3000/cart_items/${userId}/`
+
+        const postData: cartItem = {
+            pid: product.id,
+            quantity: quantity
+        }
+        console.log(postData)
+        try {
+            await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(postData),
+            })
+                .then((response) => response.json())
+            alert(`${quantity} x ${product.name} has been added to the cart`);
+        } catch (err) {
+            console.log(err);
+            alert("An error occured\nPlease try again later");
+        }
+    };
+
+
+
     return (
         <>
             <div className="purchase-details">
@@ -34,15 +68,17 @@ export default function PurchaseDetails() {
                         {user && user.street}
                     </p>
                 </div>
-                <div className="quantity">
-                    <p >Quantity</p>
-                    <button onClick={handleIncrease}>+</button>
-                    <p className="quantity-counter">{quantity}</p>
-                    <button onClick={handleDecrease}>-</button>
-                </div>
-                <div className="cart-share">
-                    <button className="button" onClick={() => { alert(`Faszomat az egesz frontendbe`) }}>Add to cart</button>
-                    <button className="button" onClick={() => { alert(`Thanks for sharing ${product && product.name}`) }}>Share</button>
+                <div>
+                    <div className="quantity">
+                        <p >Quantity</p>
+                        <button onClick={handleIncrease}>+</button>
+                        <p className="quantity-counter">{quantity}</p>
+                        <button onClick={handleDecrease}>-</button>
+                    </div>
+                    <div className="cart-share">
+                        <button className="button" onClick={addToCart}>Add to cart</button>
+                        <button className="button" onClick={() => { alert(`Thanks for sharing ${product && product.name}`) }}>Share</button>
+                    </div>
                 </div>
             </div>
         </>

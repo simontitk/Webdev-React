@@ -7,7 +7,8 @@ export default function ProductDetails() {
 
     return (
         <div className="product-details">
-            <p className="single-product-name">{product && product.name}<br />{product && product.volume} ml</p>
+            <p className="single-product-name">{product && product.name}</p>
+            <p className="product-volume">{product && product.volume} ml</p>
             <div className="price">
                 <p className="pricetag">{product && product.price} DKK</p>
                 <p className="vat">incl. VAT</p>
