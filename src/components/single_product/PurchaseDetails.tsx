@@ -37,7 +37,6 @@ export default function PurchaseDetails() {
             pid: product.id,
             quantity: quantity
         }
-        console.log(postData)
         try {
             await fetch(url, {
                 method: 'POST',
@@ -58,7 +57,7 @@ export default function PurchaseDetails() {
         if (!user) {
             return (
                 <div className="delivery-details">
-                    <p className="address">Please log in to order</p>
+                    <p className="address">Please log in to place an order</p>
                 </div>
             )
         }
@@ -73,8 +72,6 @@ export default function PurchaseDetails() {
             </>
         )
     }
-
-
 
     return (
         <>

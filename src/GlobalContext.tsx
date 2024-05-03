@@ -64,15 +64,22 @@ export default function GlobalContext({ children }: GlobalContextProps) {
             .catch(err => console.log(err));
     }, []);
 
-    const userId = Cookies.get('userId');
+    const email = Cookies.get('email');
     useEffect(() => {
-        if (userId) {
-            fetch(`http://localhost:3000/users/${userId}/`)
+        if (email) {
+            fetch(`http://localhost:3000/users/?email=${email}`)
                 .then(response => response.json())
-                .then((data: User) => { setUser(data) })
+                .then((data: User) => {
+                    console.log(user)
+                    if (!data) {
+                        return;
+                    } else {
+                        setUser(data);
+                    }
+                })
                 .catch(err => console.log(err));
         }
-    }, [userId]);
+    }, [email]);
 
 
     return (

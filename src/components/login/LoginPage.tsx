@@ -19,15 +19,20 @@ export default function LoginPage() {
      */
 
     // Function to login a user
+
     const loginUser = () => {
-        Cookies.set('email', email);
+        if (!email) {
+            alert('Please enter an email');
+            return;
+        }
         fetch(`http://localhost:3000/users/?email=${email}`)
             .then(response => response.json())
             .then((data: User) => {
                 if (data) {
+                    Cookies.set('email', email, { expires: 7, path: '' });
                     setUser(data);
                 } else {
-                    alert('EPlease enter a valid email');
+                    alert('Please enter a valid email');
                 }
             })
             .catch(err => {
@@ -37,7 +42,7 @@ export default function LoginPage() {
 
     // Function to logout a user
     const logoutUser = () => {
-        Cookies.remove('userId');
+        Cookies.remove('email', { path: '' });
         setUser(null);
     };
 
