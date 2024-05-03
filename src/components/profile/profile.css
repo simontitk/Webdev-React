@@ -3,6 +3,10 @@ p {
     max-width: 800px;
 }
 
+h1.noth1 {
+    font-size: 200%;
+}
+
 p.notH3 {
     font-weight: bold;
 }
