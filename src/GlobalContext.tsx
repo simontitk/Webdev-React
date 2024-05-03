@@ -1,5 +1,7 @@
 import { createContext, useEffect, useState } from "react";
-import { Category, Product } from "./interfaces/interfaces";
+import { Category, Product, User } from "./interfaces/interfaces";
+
+import Cookies from 'js-cookie';
 
 interface ProductContextValue {
     products: Product[],
@@ -21,15 +23,20 @@ interface SelectedCategoryContextValue {
     setSelectedCategories: Function
 }
 
+interface UserContextValue {
+    user: User | null;
+    setUser: Function
+}
+
 interface GlobalContextProps {
     children: React.ReactNode
 }
 
-export const ProductContext = createContext<ProductContextValue>({ products: [], setProducts: ()=>{} });
-export const SelectedProductContext = createContext<SelectedProductContextValue>({ selectedProducts: [], setSelectedProducts: ()=>{} });
-export const CategoryContext = createContext<CategoryContextValue>({ categories: [], setCategories: ()=>{} });
-export const SelectedCategoryContext = createContext<SelectedCategoryContextValue>({ selectedCategories: [], setSelectedCategories: ()=>{} });
-
+export const ProductContext = createContext<ProductContextValue>({ products: [], setProducts: () => { } });
+export const SelectedProductContext = createContext<SelectedProductContextValue>({ selectedProducts: [], setSelectedProducts: () => { } });
+export const CategoryContext = createContext<CategoryContextValue>({ categories: [], setCategories: () => { } });
+export const SelectedCategoryContext = createContext<SelectedCategoryContextValue>({ selectedCategories: [], setSelectedCategories: () => { } });
+export const UserContext = createContext<UserContextValue>({ user: null, setUser: () => { } });
 
 export default function GlobalContext({ children }: GlobalContextProps) {
 
@@ -37,9 +44,7 @@ export default function GlobalContext({ children }: GlobalContextProps) {
     const [selectedProducts, setSelectedProducts] = useState<Product[]>([]);
     const [categories, setCategories] = useState<Category[]>([]);
     const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
-
-
-
+    const [user, setUser] = useState<User | null>(null);
 
     useEffect(() => {
         fetch("http://localhost:3000/products/")
@@ -59,15 +64,27 @@ export default function GlobalContext({ children }: GlobalContextProps) {
             .catch(err => console.log(err));
     }, []);
 
+    const userId = Cookies.get('userId');
+    useEffect(() => {
+        if (userId) {
+            fetch(`http://localhost:3000/users/${userId}/`)
+                .then(response => response.json())
+                .then((data: User) => { setUser(data) })
+                .catch(err => console.log(err));
+        }
+    }, [userId]);
+
 
     return (
-        <CategoryContext.Provider value={{ categories, setCategories }}>
-            <SelectedCategoryContext.Provider value={{ selectedCategories, setSelectedCategories }}>
-                <ProductContext.Provider value={{ products, setProducts }}>
-                        { children }
-                </ProductContext.Provider>
-            </SelectedCategoryContext.Provider>
-        </CategoryContext.Provider>
+        <UserContext.Provider value={{ user, setUser }}>
+            <CategoryContext.Provider value={{ categories, setCategories }}>
+                <SelectedCategoryContext.Provider value={{ selectedCategories, setSelectedCategories }}>
+                    <ProductContext.Provider value={{ products, setProducts }}>
+                        {children}
+                    </ProductContext.Provider>
+                </SelectedCategoryContext.Provider>
+            </CategoryContext.Provider>
+        </UserContext.Provider>
     );
 
 }

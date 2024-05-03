@@ -1,21 +1,14 @@
-import { useContext, useEffect, useState } from "react";
-import { User } from "../../interfaces/interfaces";
+import { useContext, useState } from "react";
+import { UserContext } from "../../GlobalContext";
 import { ProductContext } from "./ProductContext";
 
 export default function PurchaseDetails() {
-    const [user, setUser] = useState<User>();
     const [quantity, setQuantity] = useState(1);
 
+    const user = useContext(UserContext).user;
     const product = useContext(ProductContext);
 
-    const userId: number = 1;
-    useEffect(() => {
-        fetch(`http://localhost:3000/users/${userId}/`)
-            .then(respone => respone.json())
-            .then((data: User) => { setUser(data) })
-            .catch(err => console.log(err));
-    }, []);
-
+    const userId: number | undefined = user?.id;
 
     const handleIncrease = () => {
         setQuantity(prevQuantity => prevQuantity < 999 ? prevQuantity + 1 : 999);
@@ -32,6 +25,10 @@ export default function PurchaseDetails() {
 
     async function addToCart(): Promise<void> {
         if (!product || !quantity) {
+            return;
+        }
+        if (!user) {
+            alert("Log in to use the cart!");
             return;
         }
         const url = `http://localhost:3000/cart_items/${userId}/`
@@ -57,16 +54,33 @@ export default function PurchaseDetails() {
         }
     };
 
+    const fillDeliveryDetails = () => {
+        if (!user) {
+            return (
+                <div className="delivery-details">
+                    <p className="address">Please log in to order</p>
+                </div>
+            )
+        }
+        return (
+            <>
+                <div className="delivery-details">
+                    <p>Free delivery to:<br />{user.city}</p>
+                    <p className="address">
+                        {user.street}
+                    </p>
+                </div>
+            </>
+        )
+    }
+
 
 
     return (
         <>
             <div className="purchase-details">
                 <div className="delivery-details">
-                    <p>Free delivery to:<br />{user && user.city}</p>
-                    <p className="address">
-                        {user && user.street}
-                    </p>
+                    {fillDeliveryDetails()}
                 </div>
                 <div>
                     <div className="quantity">

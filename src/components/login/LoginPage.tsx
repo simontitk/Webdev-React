@@ -1,6 +1,14 @@
+import { useContext, useState } from "react";
 import "./login.css";
 
+import Cookies from "js-cookie";
+import { UserContext } from "../../GlobalContext";
+import { User } from "../../interfaces/interfaces";
+
 export default function LoginPage() {
+
+    const { setUser } = useContext(UserContext);
+    const [email, setEmail] = useState('');
 
     /**
      * useState declarations
@@ -9,6 +17,29 @@ export default function LoginPage() {
     /**
      * helper function declarations
      */
+
+    // Function to login a user
+    const loginUser = () => {
+        Cookies.set('email', email);
+        fetch(`http://localhost:3000/users/?email=${email}`)
+            .then(response => response.json())
+            .then((data: User) => {
+                if (data) {
+                    setUser(data);
+                } else {
+                    alert('EPlease enter a valid email');
+                }
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    };
+
+    // Function to logout a user
+    const logoutUser = () => {
+        Cookies.remove('userId');
+        setUser(null);
+    };
 
     /**
      * fetching within useEffects
@@ -22,6 +53,14 @@ export default function LoginPage() {
 
     return (
         <>
+            <input
+                type="email"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                placeholder="Enter email"
+            />
+            <button onClick={loginUser}>Log In</button>
+            <button onClick={logoutUser}>Log Out</button>
         </>
 
     );
