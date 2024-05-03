@@ -11,7 +11,7 @@
     flex-direction: row;
     justify-content: space-between;
     width: 100%;
-    height: 500px;
+    min-height: 500px;
 }
 
 .product>div:first-child {
@@ -60,6 +60,7 @@
     height: 500px;
     min-width: 260px;
     max-width: 260px;
+    margin-left: 10px;
 }
 
 .product-picture {
@@ -95,6 +96,8 @@
 /* ---------- product description ----------- */
 .product-details {
     height: 100%;
+    margin-left: 20px;
+    margin-right: 20px;
 }
 
 .single-product-name {
@@ -153,6 +156,7 @@
     flex-direction: column;
     align-items: center;
     height: 100%;
+    margin-left: 10px;
 }
 
 .delivery-details {
@@ -253,10 +257,6 @@
         margin-right: 10px;
         display: flex;
         flex-direction: column;
-    }
-
-    .quantity p {
-        display: none;
     }
 
     .share-like {
