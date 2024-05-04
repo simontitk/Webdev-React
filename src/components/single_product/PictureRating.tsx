@@ -19,7 +19,7 @@ export default function PictureRating() {
 
     return (
         <div className="pictures-rating">
-            <div className="product-img-container">
+            <div className="product-img-container single-product-img-container">
                 <img alt="product picture" className="product-image" src={`http://localhost:3000/images/products/${product?.picture_uri}`} />
             </div>
             <div className="rating">
