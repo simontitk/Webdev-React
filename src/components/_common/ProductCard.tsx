@@ -24,7 +24,7 @@ export default function ProductCard({ id, name, description, picture_uri, volume
                 {rating}
             </div>
             <div className="product-display">
-                <Link to={`/products/${id}`}>
+                <a href={`/products/${id}`}>
                     <div className="product-img-container">
                         <img
                             src={`http://localhost:3000/images/products/${picture_uri}`}
@@ -37,7 +37,7 @@ export default function ProductCard({ id, name, description, picture_uri, volume
                         <span className="product-name">{name}</span>
                         <span className="product-size">{amount} x {volume} ml</span>
                     </div>
-                </Link>
+                </a>
             </div>
             <div className="product-purchase-container">
                 <span className="product-price">{price} DKK</span>
