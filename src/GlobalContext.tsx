@@ -1,7 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import { Category, Product, User } from "./interfaces/interfaces";
-
 import Cookies from 'js-cookie';
+
 
 interface ProductContextValue {
     products: Product[],
@@ -40,11 +40,12 @@ export const UserContext = createContext<UserContextValue>({ user: null, setUser
 
 export default function GlobalContext({ children }: GlobalContextProps) {
 
+    const loggedInUser = JSON.parse(Cookies.get("user") || 'null')
     const [products, setProducts] = useState<Product[]>([]);
     const [selectedProducts, setSelectedProducts] = useState<Product[]>([]);
     const [categories, setCategories] = useState<Category[]>([]);
     const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
-    const [user, setUser] = useState<User | null>(null);
+    const [user, setUser] = useState<User | null>(loggedInUser);
 
     useEffect(() => {
         fetch("http://localhost:3000/products/")
@@ -63,23 +64,6 @@ export default function GlobalContext({ children }: GlobalContextProps) {
             })
             .catch(err => console.log(err));
     }, []);
-
-    const email = Cookies.get('email');
-    useEffect(() => {
-        if (email) {
-            fetch(`http://localhost:3000/users/?email=${email}`)
-                .then(response => response.json())
-                .then((data: User) => {
-                    console.log(user)
-                    if (!data) {
-                        return;
-                    } else {
-                        setUser(data);
-                    }
-                })
-                .catch(err => console.log(err));
-        }
-    }, [email]);
 
 
     return (
