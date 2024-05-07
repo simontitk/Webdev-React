@@ -1,11 +1,10 @@
-import { useContext, useState } from "react"
 import Cookies from "js-cookie";
-import { UserContext } from "../../GlobalContext";
+import { useContext, useState } from "react";
 import { useNavigate } from 'react-router-dom';
+import { UserContext } from "../../GlobalContext";
 
 interface Errors {
-    email?: string;
-    password?: string;
+    message?: string;
 }
 
 export default function LoginForm() {
@@ -26,64 +25,54 @@ export default function LoginForm() {
 
 
     const loginUser = () => {
-        const newErrors: Errors = {};
-
-        if (!email) {
-            alert('Please enter an email');
-            return;
-        }
         fetch("http://localhost:3000/login/", {
             method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({"email": email, "password": password})
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ "email": email, "password": password })
         })
-        .then(res => res.json())
-        .then(data => {
-            if (data.password === password) {
-                if (data) {
-                    Cookies.set("user", JSON.stringify(data), {expires: 7, path: ""});
-                    setUser(data);
-                    navigate('/');
-                } else {
-                    newErrors.password = 'Password incorrect'
-                } 
-            } else {
-                newErrors.email = 'Please enter a valid email'
-            }
-            setErrors(newErrors);
-        })
-        .catch(err => {
-            console.log(err);
-        });
+            .then(res => {
+                switch (res.status) {
+                    case 200: return res.json()
+                    case 401: throw new Error("Invalid password");
+                    case 404: throw new Error("Invalid email");
+                    default: throw new Error("Unknown error")
+                }
+            })
+            .then(data => {
+                console.log(data)
+                setUser(data);
+                Cookies.set("user", JSON.stringify(data), { expires: 7, path: "" });
+                navigate('/');
+            })
+            .catch(err => setErrors({ message: err.message }));
     };
-    
+
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         loginUser();
     }
 
-    return(
+    return (
         <form onSubmit={handleSubmit} className="form">
             <label htmlFor="email">Email address: </label>
-            <input className="input" 
-                    id="email" 
-                    type = "email" 
-                    value={email} 
-                    onChange={onChangeEmail} 
-                    placeholder="Enter email address"/>
-            {errors.email && <div style={{ color: 'red' }}>{errors.email}</div>}
-            
-            <label htmlFor="password">Password: </label>
-            <input className="input" 
-                    id="password" 
-                    type="password"
-                    value={password} 
-                    onChange={onChangePassword} 
-                    placeholder="Enter password"/>
-            {errors.password && <div style={{ color: 'red' }}>{errors.password}</div>}
+            <input className="input"
+                id="email"
+                type="email"
+                value={email}
+                onChange={onChangeEmail}
+                placeholder="Enter email address" />
 
-            <button type="submit" className = "button">
+            <label htmlFor="password">Password: </label>
+            <input className="input"
+                id="password"
+                type="password"
+                value={password}
+                onChange={onChangePassword}
+                placeholder="Enter password" />
+            {errors.message && <div style={{ color: 'red' }}>{errors.message}</div>}
+
+            <button type="submit" className="button">
                 Login
             </button>
         </form>
