@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import { Category, Product } from "./interfaces/interfaces";
+import { Category, Product, User } from "./interfaces/interfaces";
 
 interface ProductContextValue {
     products: Product[],
@@ -25,10 +25,18 @@ interface GlobalContextProps {
     children: React.ReactNode
 }
 
+interface UserContextValue {
+    user?: User,
+    setUser: Function,
+    isLoggedIn: Boolean,
+    setIsLoggedIn:Function
+}
+
 export const ProductContext = createContext<ProductContextValue>({ products: [], setProducts: ()=>{} });
 export const SelectedProductContext = createContext<SelectedProductContextValue>({ selectedProducts: [], setSelectedProducts: ()=>{} });
 export const CategoryContext = createContext<CategoryContextValue>({ categories: [], setCategories: ()=>{} });
 export const SelectedCategoryContext = createContext<SelectedCategoryContextValue>({ selectedCategories: [], setSelectedCategories: ()=>{} });
+export const UserContext = createContext<UserContextValue>({isLoggedIn: false, setIsLoggedIn: ()=>{}, setUser: ()=>{}})
 
 
 export default function GlobalContext({ children }: GlobalContextProps) {
@@ -37,6 +45,7 @@ export default function GlobalContext({ children }: GlobalContextProps) {
     const [selectedProducts, setSelectedProducts] = useState<Product[]>([]);
     const [categories, setCategories] = useState<Category[]>([]);
     const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
+    const [user, setUser] = useState<User>();
 
 
 

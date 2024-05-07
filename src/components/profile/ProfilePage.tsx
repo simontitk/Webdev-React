@@ -1,3 +1,5 @@
+import ProfileDisplay from "./ProfileDisplay";
+import ProfileNavigation from "./ProfileNavigation";
 import "./profile.css";
 /* import {User} from "src\interfaces\interfaces.ts";*/
 
@@ -22,16 +24,13 @@ export default function ProfilePage() {
 
 
     return (
-        <div>
-            <div className="left-panel-profile">
-                
-            </div>
-            <div id="center-panel-profile">
-                <h1 className="noth1">work dammit</h1>
-            </div>
-            <div className="right-panel-profile">
-                
-            </div>
+        <> 
+        <ProfileNavigation></ProfileNavigation>
+        <ProfileDisplay></ProfileDisplay>
+
+        <div className="right-panel" id="right-panel-profile">
         </div>
+
+        </>
     );
 }
