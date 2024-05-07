@@ -1,107 +1,202 @@
 import { useState } from "react"
+import { useNavigate } from 'react-router-dom';
 
-
-export default function LoginForm() {
-    const [firstName, setFirstName] = useState("")
-    const [lastName, setLastName] = useState("")
-    const [email, setEmail] = useState("")
-    const [phone, setPhone] = useState("")
-    const [city, setCity] = useState("")
-    const [street, setStreet] = useState("")
-    const [password, setPassword] = useState("")
-
-    const onChangeFirstName = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setFirstName(e.target.value);
+    interface Errors {
+        firstName?: string;
+        lastName?: string;
+        email?: string;
+        phone?: string;
+        street?: string;
+        city?: string;
+        password?: string;
     }
 
-    const onChangeLastName = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setLastName(e.target.value);
-    }
+export default function RegistrationForm() {
+    const navigate = useNavigate();
+    const [formData, setFormData] = useState({
+        firstName: '',
+        lastName: '',
+        email: '',
+        phone: '',
+        street: '',
+        city: '',
+        password: '',
+    });
 
-    const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setEmail(e.target.value);
-    }
+    const [errors, setErrors] = useState<Errors>({});
 
-    const onChangePhone = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setPhone(e.target.value);
-    }
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setFormData((prevFormData) => ({
+            ...prevFormData,
+            [name]: value,
+        }));
+    };
 
-    const onChangeStreet = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setStreet(e.target.value);
-    }
+    const validateForm = (): boolean => {
+        const newErrors: Errors = {};
 
-    const onChangeCity = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setCity(e.target.value);
-    }
+        // Check first name
+        if (!formData.firstName) {
+            newErrors.firstName = 'First name is required';
+        } else if (formData.firstName.length > 15) {
+            newErrors.firstName = 'First name must be less than 15 characters';
+        }
 
-    const onChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setPassword(e.target.value);
-    }
+        // Check last name
+        if (!formData.lastName) {
+            newErrors.lastName = 'Last name is required';
+        } else if (formData.lastName.length > 50) {
+            newErrors.lastName = 'Last name must be less than 50 characters';
+        }
 
-    const handleSubmit = (e: React.FormEvent) => {
+        // Check email
+        const emailCheck = formData.email.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/);
+        if (!formData.email) {
+            newErrors.email = 'Email is required';
+        } else if (!emailCheck) {
+            newErrors.email = 'Email must contain "@" and "."';
+        }
+
+        // Check phone
+        const phoneNumberMatch = formData.phone.match(/^\d{8}$/);
+        if (!formData.phone) {
+            newErrors.phone = 'Phone number is required'; 
+        } else if (!phoneNumberMatch){
+            newErrors.phone = 'Phone number must be 8 digits';
+        }
+
+        // Check street
+        const houseNumberMatch = formData.street.match(/\d{1,4}.*$/);
+        if (!formData.street) {
+            newErrors.street = 'Street is required';
+        } else if (!houseNumberMatch) {
+            newErrors.street = 'Street must contain a house number';
+        }
+
+        // Check city
+        const zipCodeMatch = formData.city.match(/^\d{4}.*$/);
+        if (!formData.city) {
+            newErrors.city = 'City is required';
+        } else if (!zipCodeMatch) {
+            newErrors.city = 'City must start with a zip code (4 digits)';
+        }
+
+        // Check password
+        if (!formData.password) {
+            newErrors.password = 'Password is required';
+        }
+
+        setErrors(newErrors);
+
+        // Return whether the form is valid
+        return Object.keys(newErrors).length === 0;
+    };
+
+
+
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        if (validateForm()) {
+            // Form is valid, perform form submission logic here
+            try {
+                // Send a POST request to the server with formData
+                await fetch('http://localhost:3000/users/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData),
+                });
 
-        alert(`Form submitted with: ${email}`);
-    }
+            } catch (error) {
+                // Handle fetch errors
+                console.log('Fetch error:', error);
+                // Update errors state if necessary
+                setErrors((prevErrors) => ({
+                    ...prevErrors,
+                    serverError: 'An error occurred during registration.',
+                }));
+            }
+            console.log('Form submitted with:', formData);
+            navigate('/login');
+        } else {
+            console.log('Form contains errors:', errors);
+        }
+    };
 
     return(
         <form onSubmit={handleSubmit} className="form">
             <label htmlFor="firstName">First name: </label>
             <input className="input" 
                     id="firstName" 
+                    name="firstName"
                     type="text" 
-                    value={firstName}
-                    onChange={onChangeFirstName} 
-                    placeholder="Enter first name">
-            </input>
+                    value={formData.firstName}
+                    onChange={handleChange} 
+                    placeholder="Enter first name"/>
+            {errors.firstName && <div style={{ color: 'red' }}>{errors.firstName}</div>}
+
             <label htmlFor="lastName">Last name: </label>
             <input className="input" 
                     id="lastName" 
+                    name="lastName" 
                     type="text" 
-                    value={lastName}
-                    onChange={onChangeLastName} 
-                    placeholder="Enter last name">
-            </input>
+                    value={formData.lastName}
+                    onChange={handleChange} 
+                    placeholder="Enter last name"/>
+            {errors.lastName && <div style={{ color: 'red' }}>{errors.lastName}</div>}
+
             <label htmlFor="email">Email address: </label>
             <input className="input" 
                     id="email" 
+                    name="email" 
                     type="email" 
-                    value={email} 
-                    onChange={onChangeEmail} 
-                    placeholder="Enter email address">
-            </input>
+                    value={formData.email} 
+                    onChange={handleChange} 
+                    placeholder="Enter email address"/>
+            {errors.email && <div style={{ color: 'red' }}>{errors.email}</div>}
+
             <label htmlFor="phone">Phone number: </label>
             <input className="input" 
                     id="phone" 
+                    name="phone" 
                     type="text" 
-                    value={phone}
-                    onChange={onChangePhone} 
-                    placeholder="Enter phone number">
-            </input>
+                    value={formData.phone}
+                    onChange={handleChange} 
+                    placeholder="Enter phone number"/>
+            {errors.phone && <div style={{ color: 'red' }}>{errors.phone}</div>}
+
             <label htmlFor="city">City: </label>
             <input className="input" 
                     id="city" 
+                    name="city" 
                     type="text" 
-                    value={city}
-                    onChange={onChangeCity} 
-                    placeholder="Enter city">
-            </input>
+                    value={formData.city}
+                    onChange={handleChange} 
+                    placeholder="Enter city"/>
+            {errors.city && <div style={{ color: 'red' }}>{errors.city}</div>}
+
             <label htmlFor="street">Street: </label>
             <input className="input" 
                     id="street" 
+                    name="street" 
                     type="text" 
-                    value={street}
-                    onChange={onChangeStreet} 
-                    placeholder="Enter street name">
-            </input>
+                    value={formData.street}
+                    onChange={handleChange} 
+                    placeholder="Enter street name"/>
+            {errors.street && <div style={{ color: 'red' }}>{errors.street}</div>}
+
             <label htmlFor="password">Password: </label>
             <input className="input" 
                     id="password" 
+                    name="password" 
                     type="password"
-                    value={password} 
-                    onChange={onChangePassword} 
-                    placeholder="Enter password">
-            </input>
+                    value={formData.password} 
+                    onChange={handleChange} 
+                    placeholder="Enter password"/>
+            {errors.password && <div style={{ color: 'red' }}>{errors.password}</div>}
+
             <button type="submit" className = "button">
                 Create account
             </button>

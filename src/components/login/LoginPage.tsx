@@ -4,24 +4,6 @@ import LoginForm from "./LoginForm";
 
 export default function LoginPage() {
 
-    /**
-     * useState declarations
-     */
-
-    /**
-     * helper function declarations
-     */
-
-    /**
-     * fetching within useEffects
-     */
-
-
-    /**
-     * return jsx
-     */
-
-
     return (
         <>
         <div className="left-panel"></div>
@@ -36,7 +18,6 @@ export default function LoginPage() {
                     Create account
                 </button>
             </Link>
-
         </div>
         <div className="right-panel"></div>
         </>

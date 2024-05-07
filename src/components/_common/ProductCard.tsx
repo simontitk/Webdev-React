@@ -1,5 +1,4 @@
-import { useNavigate } from "react-router-dom";
-
+import { Link } from "react-router-dom";
 import "./product_card.css";
 
 
@@ -16,12 +15,6 @@ interface ProductCardProps {
 
 export default function ProductCard({ id, name, description, picture_uri, volume, amount, rating, price }: ProductCardProps) {
 
-    const navigate = useNavigate()
-    const handleClick = () => {
-        navigate(`/products/${id}`);
-        window.location.reload();
-    };
-
     return (
         <div className="product-card">
             <div className="rating-icon">
@@ -30,19 +23,21 @@ export default function ProductCard({ id, name, description, picture_uri, volume
             <div className="rating-number">
                 {rating}
             </div>
-            <div className="product-display" onClick={handleClick}>
-                <div className="product-img-container">
-                    <img
-                        src={`http://localhost:3000/images/products/${picture_uri}`}
-                        alt={description}
-                        height="260px"
-                        className="product-image">
-                    </img>
-                </div>
-                <div className="product-name-container">
-                    <span className="product-name">{name}</span>
-                    <span className="product-size">{amount} x {volume} ml</span>
-                </div>
+            <div className="product-display">
+                <a href={`/products/${id}`}>
+                    <div className="product-img-container">
+                        <img
+                            src={`http://localhost:3000/images/products/${picture_uri}`}
+                            alt={description}
+                            height="260px"
+                            className="product-image">
+                        </img>
+                    </div>
+                    <div className="product-name-container">
+                        <span className="product-name">{name}</span>
+                        <span className="product-size">{amount} x {volume} ml</span>
+                    </div>
+                </a>
             </div>
             <div className="product-purchase-container">
                 <span className="product-price">{price} DKK</span>

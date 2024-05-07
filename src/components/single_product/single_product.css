@@ -10,8 +10,9 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: flex-start;
     width: 100%;
+    min-height: 500px;
+    padding: 10px;
 }
 
 .product>div:first-child {
@@ -56,28 +57,32 @@
 .pictures-rating {
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
     align-items: center;
-    margin: 10px;
     height: 500px;
     min-width: 260px;
     max-width: 260px;
+    margin-left: 10px;
+    margin-top: 20px;
 }
 
-.product-picture {
-    width: 80%;
-    aspect-ratio: 1 / 1;
-    object-fit: cover;
-    object-position: center;
-    border: rgb(231, 231, 231) 1px solid;
+
+.single-product-img-container {
+    background-color: white;
+    border: rgb(0, 0, 0, 0.2) 1px solid;
+    min-width: 260px;
+    max-width: 260px;
+    text-align: center;
+    position: relative;
 }
 
 .rating {
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
+    justify-content: space-evenly;
     font-size: 20px;
-    color: rgb(53, 53, 53)
+    color: rgb(53, 53, 53);
+    min-width: 260px;
+    max-width: 260px;
 }
 
 .droplets {
@@ -97,16 +102,21 @@
 /* ---------- product description ----------- */
 .product-details {
     height: 100%;
-    margin: 10px;
-    height: 100%;
+    margin-left: 20px;
+    margin-right: 20px;
 }
 
 .single-product-name {
     margin-top: 10px;
     margin-bottom: 0px;
     font-size: 30px;
-    font-weight: 450;
+    font-weight: 500;
+}
 
+.product-volume {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 300;
 }
 
 .price {
@@ -117,7 +127,7 @@
 }
 
 .product-brand {
-    font-weight: bold;
+    font-weight: 550;
 }
 
 .price p {
@@ -132,7 +142,7 @@
 
 .vat {
     font-size: 12px;
-    color: grey;
+    color: rgb(0, 0, 0, 0.6);
 }
 
 
@@ -150,22 +160,19 @@
 .purchase-details {
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
     align-items: center;
-    margin: 10px;
     height: 100%;
+    margin-left: 10px;
 }
 
 .delivery-details {
     font-size: 18px;
-}
-
-.delivery-details>p {
-    margin: 5px 0px;
+    min-height: 290px;
+    max-height: 290px;
 }
 
 .address {
-    color: grey;
+    color: rgb(0, 0, 0, 0.5)
 }
 
 .quantity {
@@ -187,9 +194,7 @@
 
 .quantity p {
     margin-top: 0px;
-    padding-top: 0px;
     margin-bottom: 0px;
-    padding-bottom: 0px;
 }
 
 .quantity button {
@@ -258,10 +263,6 @@
         margin-right: 10px;
         display: flex;
         flex-direction: column;
-    }
-
-    .quantity p {
-        display: none;
     }
 
     .share-like {

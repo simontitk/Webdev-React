@@ -5,7 +5,7 @@ import LandingSection from "./LandingSection";
 import ProductCard from "../_common/ProductCard";
 import FrontpageSection from "./FrontpageSection";
 import "./home.css";
-import { CategoryContext, ProductContext } from "../../contexts";
+import { CategoryContext, ProductContext } from "../../GlobalContext";
 
 export default function HomePage() {
 

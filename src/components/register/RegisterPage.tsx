@@ -4,24 +4,6 @@ import RegistrationForm from "./RegistrationForm";
 
 export default function RegisterPage() {
 
-    /**
-     * useState declarations
-     */
-
-    /**
-     * helper function declarations
-     */
-
-    /**
-     * fetching within useEffects
-     */
-
-
-    /**
-     * return jsx
-     */
-
-
     return (
         <>
         <div className="left-panel"></div>
