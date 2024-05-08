@@ -32,6 +32,13 @@ interface GlobalContextProps {
     children: React.ReactNode
 }
 
+interface UserContextValue {
+    user?: User,
+    setUser: Function,
+    isLoggedIn: Boolean,
+    setIsLoggedIn:Function
+}
+
 export const ProductContext = createContext<ProductContextValue>({ products: [], setProducts: () => { } });
 export const SelectedProductContext = createContext<SelectedProductContextValue>({ selectedProducts: [], setSelectedProducts: () => { } });
 export const CategoryContext = createContext<CategoryContextValue>({ categories: [], setCategories: () => { } });
