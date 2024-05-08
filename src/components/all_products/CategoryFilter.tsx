@@ -16,12 +16,14 @@ export default function CategoryFilter({ categories, selectedCategories, setSele
         };
     }
 
+
     function invertSelection() {
         const temp = categories
             .map(category => category.id)
             .filter(cid => !selectedCategories.includes(cid));
         setSelectedCategories(temp);
     }
+    
     
     function selectAll() {
         const temp = categories.map(category => category.id);

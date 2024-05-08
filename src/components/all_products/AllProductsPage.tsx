@@ -1,17 +1,15 @@
 import { useContext, useEffect, useState } from "react";
-import { Category, Product } from "../../interfaces/interfaces";
+import { Product } from "../../interfaces/interfaces";
+import { useSearchParams } from "react-router-dom";
+import { CategoryContext, ProductContext } from "../../GlobalContext";
+import ProductDisplay from "./ProductDisplay";
 import FilterContainer from "./FilterContainer";
 import CategoryFilter from "./CategoryFilter";
 import RangeFilter from "./RangeFilter";
-import ProductDisplay from "./ProductDisplay";
-import { useSearchParams } from "react-router-dom";
-import { CategoryContext, ProductContext } from "../../GlobalContext";
 import "./all_products.css";
 
-export default function AllProductsPage() {
 
-    
-    // state declaration
+export default function AllProductsPage() {
     
     const [searchParams, setSearchParams] = useSearchParams();
     const [filterParams, setFilterParams] = useState({
@@ -25,31 +23,14 @@ export default function AllProductsPage() {
 
     const { products } = useContext(ProductContext);
     const { categories } = useContext(CategoryContext);
-    
     const [selectedCategories, setSelectedCategories] = useState<number[]>(searchParams.getAll("category").map(Number));
     const [filteredProducts, setFilteredProducts] = useState<Product[]>(products);
 
-    const [rendercount, setrendercount] = useState(0);
 
-    useEffect(() => {
-        if (! searchParams.get("category")) {
-            const temp = categories.map(category => category.id);
-            setSelectedCategories(temp);
-        }
-    }, [categories]);
-
-
-    useEffect(() => {
-        filterProducts();
-        setrendercount(rendercount+1);
-    }, [selectedCategories, filterParams, products])
-
-
-
-    function handleFilterChange(e: any) {
+    function handleFilterChange(e: React.ChangeEvent<HTMLInputElement>) {
         const name = e.target.name;
         const value = parseFloat(e.target.value);
-        setFilterParams({...filterParams, [name]: value})
+        setFilterParams({...filterParams, [name]: value});
     }
 
 
@@ -60,10 +41,9 @@ export default function AllProductsPage() {
             p.volume >= filterParams.minVolume &&
             p.volume <= filterParams.maxVolume &&
             p.rating >= filterParams.minRating &&
-            p.rating <= filterParams.maxRating 
-            && p.categories.some(category => selectedCategories.includes(category.id))
+            p.rating <= filterParams.maxRating &&
+            p.categories.some(category => selectedCategories.includes(category.id))
         ));
-
         const params: any = Object.fromEntries(searchParams);
         params["min_price"] = String(filterParams.minPrice);
         params["max_price"] = String(filterParams.maxPrice);
@@ -71,7 +51,7 @@ export default function AllProductsPage() {
         params["max_volume"] = String(filterParams.maxVolume);
         params["min_rating"] = String(filterParams.minRating);
         params["max_rating"] = String(filterParams.maxRating);
-        params["category"] = selectedCategories.map(c=>String(c));
+        params["category"] = selectedCategories.map(String);
 
         setSearchParams(params);
         setFilteredProducts(temp);
@@ -89,6 +69,19 @@ export default function AllProductsPage() {
             maxRating: 5
         });
     }
+
+
+    useEffect(() => {
+        if (!searchParams.get("category")) {
+            const temp = categories.map(category => category.id);
+            setSelectedCategories(temp);
+        }
+    }, [categories]);
+
+
+    useEffect(() => {
+        filterProducts();
+    }, [selectedCategories, filterParams, products]);
     
 
     return (
