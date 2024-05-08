@@ -1,13 +1,14 @@
 interface RangeFilterProps {
+    minName: string,
+    maxName: string,
     unit: React.ReactNode,
     step: number,
     min: number,
     max: number,
-    setMin: Function,
-    setMax: Function,
+    setValue: Function
 }
 
-export default function RangeFilter({unit, step, min, max, setMin, setMax}: RangeFilterProps) {
+export default function RangeFilter({minName, maxName, unit, step, min, max, setValue}: RangeFilterProps) {
 
     return (
         <>
@@ -15,25 +16,25 @@ export default function RangeFilter({unit, step, min, max, setMin, setMax}: Rang
                 <input 
                     className="filter-input" 
                     type="number" 
-                    name={`${unit}-min-input`}
+                    name={minName}
                     min={0} max={max} 
                     id={`${unit}-min-input`}
                     placeholder="From"
                     value={min}
                     step={step}
-                    onChange={(event) => setMin(parseFloat(event.target.value))}>
+                    onChange={(event) => setValue(event)}>
                 </input>
                 -
                 <input 
                     className="filter-input" 
                     type="number" 
-                    name={`${unit}-max-input`}
+                    name={maxName}
                     min={min} max={5000} 
                     id={`${unit}-max-input`}
                     placeholder="To"
                     value={max}
                     step={step}
-                    onChange={(event) => setMax(parseFloat(event.target.value))}>
+                    onChange={(event) => setValue(event)}>
                 </input>
                 {unit}
             </span>
