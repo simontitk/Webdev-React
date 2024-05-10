@@ -1,36 +1,26 @@
+import { Navigate } from "react-router-dom";
+import { useContext } from "react";
+import { UserContext } from "../../GlobalContext";
 import ProfileDisplay from "./ProfileDisplay";
 import ProfileNavigation from "./ProfileNavigation";
 import "./profile.css";
-/* import {User} from "src\interfaces\interfaces.ts";*/
 
 export default function ProfilePage() {
 
-    /**
-     * useState declarations
-     */
+    const { user } = useContext(UserContext);
 
-    /**
-     * helper function declarations
-     */
-
-    /**
-     * fetching within useEffects
-     */
-
-
-    /**
-     * return jsx
-     */
-
-
-    return (
-        <> 
-        <ProfileNavigation></ProfileNavigation>
-        <ProfileDisplay></ProfileDisplay>
-
-        <div className="right-panel" id="right-panel-profile">
-        </div>
-
-        </>
-    );
+    if (!user) {
+        return <Navigate to='/login' replace={true} ></Navigate>
+    } 
+    
+    else {
+        return (
+            <> 
+                <ProfileNavigation></ProfileNavigation>
+                <ProfileDisplay user={user}></ProfileDisplay>
+                <div className="right-panel" id="right-panel-profile">
+                </div>
+            </>
+        );
+    }
 }
