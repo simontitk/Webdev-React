@@ -2,7 +2,7 @@ export default function Footer() {
 
     return (
         <>
-            <div className="footer-container">
+            <div className="footer-container" id="footer">
                 <div className="footer-column-container">
                     <div className="footer-column">
                         <h1>Contact</h1>

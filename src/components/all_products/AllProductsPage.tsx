@@ -1,60 +1,88 @@
-import { useEffect, useState } from "react";
-import { Category, Product } from "../../interfaces/interfaces";
+import { useContext, useEffect, useState } from "react";
+import { Product } from "../../interfaces/interfaces";
+import { useSearchParams } from "react-router-dom";
+import { CategoryContext, ProductContext } from "../../GlobalContext";
+import ProductDisplay from "./ProductDisplay";
 import FilterContainer from "./FilterContainer";
 import CategoryFilter from "./CategoryFilter";
 import RangeFilter from "./RangeFilter";
-import ProductDisplay from "./ProductDisplay";
 import "./all_products.css";
 
-export default function AllProductsPage() {
 
-    const [products, setProducts] = useState<Product[]>([]);
+export default function AllProductsPage() {
+    
+    const [searchParams, setSearchParams] = useSearchParams();
+    const [filterParams, setFilterParams] = useState({
+        minPrice: parseInt(searchParams.get("min_price") || "0"),
+        maxPrice: parseInt(searchParams.get("max_price") || "1000"),
+        minVolume: parseInt(searchParams.get("min_volume") || "0"),
+        maxVolume: parseInt(searchParams.get("max_volume") || "5000"),
+        minRating: parseInt(searchParams.get("min_rating") || "1"),
+        maxRating: parseInt(searchParams.get("max_rating") || "5")
+    });
+
+    const { products } = useContext(ProductContext);
+    const { categories } = useContext(CategoryContext);
+    const [selectedCategories, setSelectedCategories] = useState<number[]>(searchParams.getAll("category").map(Number));
     const [filteredProducts, setFilteredProducts] = useState<Product[]>(products);
 
-    const [categories, setCategories] = useState<Category[]>([]);
-    const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
 
-    const [minPrice, setMinPrice] = useState<number>(0);
-    const [maxPrice, setMaxPrice] = useState<number>(1000);
-    const [minVolume, setMinVolume] = useState<number>(0);
-    const [maxVolume, setMaxVolume] = useState<number>(5000);
-    const [minRating, setMinRating] = useState<number>(1);
-    const [maxRating, setMaxRating] = useState<number>(5);
+    function handleFilterChange(e: React.ChangeEvent<HTMLInputElement>) {
+        const name = e.target.name;
+        const value = parseFloat(e.target.value);
+        setFilterParams({...filterParams, [name]: value});
+    }
 
 
-    function filterProducts(): void {
+    function filterProducts() {
         const temp = products.filter(p => (
-            p.price >= minPrice &&
-            p.price <= maxPrice &&
-            p.volume >= minVolume &&
-            p.volume <= maxVolume &&
-            p.rating >= minRating &&
-            p.rating <= maxRating &&
+            p.price >= filterParams.minPrice &&
+            p.price <= filterParams.maxPrice &&
+            p.volume >= filterParams.minVolume &&
+            p.volume <= filterParams.maxVolume &&
+            p.rating >= filterParams.minRating &&
+            p.rating <= filterParams.maxRating &&
             p.categories.some(category => selectedCategories.includes(category.id))
         ));
+        const params: any = Object.fromEntries(searchParams);
+        params["min_price"] = String(filterParams.minPrice);
+        params["max_price"] = String(filterParams.maxPrice);
+        params["min_volume"] = String(filterParams.minVolume);
+        params["max_volume"] = String(filterParams.maxVolume);
+        params["min_rating"] = String(filterParams.minRating);
+        params["max_rating"] = String(filterParams.maxRating);
+        params["category"] = selectedCategories.map(String);
+
+        setSearchParams(params);
         setFilteredProducts(temp);
-    };
+    }
 
 
-    function resetFilter(): void {
-        setFilteredProducts(products);
+    function resetFilters() {
+        setSelectedCategories(categories.map(category => category.id));
+        setFilterParams({
+            minPrice: 0,
+            maxPrice: 1000,
+            minVolume: 0,
+            maxVolume: 5000,
+            minRating: 1,
+            maxRating: 5
+        });
     }
 
 
     useEffect(() => {
-        fetch("http://localhost:3000/products/")
-            .then(respone => respone.json())
-            .then((data: Product[]) => {setProducts(data); setFilteredProducts(data)})
-            .catch(err => console.log(err));
-    }, []);
+        if (!searchParams.get("category")) {
+            const temp = categories.map(category => category.id);
+            setSelectedCategories(temp);
+        }
+    }, [categories]);
+
 
     useEffect(() => {
-        fetch("http://localhost:3000/categories/")
-            .then(respone => respone.json())
-            .then((data: Category[]) => {setCategories(data); setSelectedCategories(data.map(category => category.id))})
-            .catch(err => console.log(err));
-    }, []);
-
+        filterProducts();
+    }, [selectedCategories, filterParams, products]);
+    
 
     return (
         <>
@@ -70,53 +98,50 @@ export default function AllProductsPage() {
 
                 <FilterContainer name="Price">
                     <RangeFilter 
-                        unit={"DKK"} 
+                        minName={"minPrice"} 
+                        maxName={"maxPrice"}
+                        unit={"DKK"}
                         step={1}
-                        min={minPrice} 
-                        max={maxPrice} 
-                        setMin={setMinPrice} 
-                        setMax={setMaxPrice}>
+                        min={filterParams.minPrice}
+                        max={filterParams.maxPrice}
+                        setValue={handleFilterChange}>
                     </RangeFilter>
                 </FilterContainer>
 
                 <FilterContainer name="Volume">
-                    <RangeFilter  
+                    <RangeFilter 
+                        minName={"minVolume"}
+                        maxName={"maxVolume"}
                         unit={"ml"}
                         step={10}
-                        min={minVolume} 
-                        max={maxVolume} 
-                        setMin={setMinVolume} 
-                        setMax={setMaxVolume}>
+                        min={filterParams.minVolume} 
+                        max={filterParams.maxVolume} 
+                        setValue={handleFilterChange}>
                     </RangeFilter>
                 </FilterContainer>
 
                 <FilterContainer name="Rating">
                     <RangeFilter 
-                        unit={<img src="icons/droplet.png" alt="icon of a water droplet" width="28px"></img>}
+                        minName={"minRating"}
+                        maxName={"maxRating"}
+                        unit={<img src="icons/droplet.png" alt="icon of a water droplet" width="28px" />}
                         step={1} 
-                        min={minRating} 
-                        max={maxRating} 
-                        setMin={setMinRating} 
-                        setMax={setMaxRating}>
+                        min={filterParams.minRating} 
+                        max={filterParams.maxRating} 
+                        setValue={handleFilterChange}>
                     </RangeFilter>
                 </FilterContainer>
 
                 <div className="filter-button-container">
                     <button 
                         className="filter-button" 
-                        id="filter-button"
-                        onClick={() => {filterProducts()}}>
-                        Filter products
-                    </button>
-                    <button 
-                        className="filter-button" 
                         id="reset-filter-button"
-                        onClick={() => resetFilter()}>
+                        onClick={resetFilters}>
                         Reset filters
                     </button>
                 </div>
             </div>
-            
+
             <ProductDisplay products={filteredProducts}>
             </ProductDisplay>
 

@@ -1,72 +1,25 @@
-import { useContext, useState } from "react";
+import { Link } from "react-router-dom";
 import "./login.css";
-
-import Cookies from "js-cookie";
-import { UserContext } from "../../GlobalContext";
-import { User } from "../../interfaces/interfaces";
+import LoginForm from "./LoginForm";
 
 export default function LoginPage() {
 
-    const { setUser } = useContext(UserContext);
-    const [email, setEmail] = useState('');
-
-    /**
-     * useState declarations
-     */
-
-    /**
-     * helper function declarations
-     */
-
-    // Function to login a user
-
-    const loginUser = () => {
-        if (!email) {
-            alert('Please enter an email');
-            return;
-        }
-        fetch(`http://localhost:3000/users/?email=${email}`)
-            .then(response => response.json())
-            .then((data: User) => {
-                if (data) {
-                    Cookies.set('email', email, { expires: 7, path: '' });
-                    setUser(data);
-                } else {
-                    alert('Please enter a valid email');
-                }
-            })
-            .catch(err => {
-                console.log(err);
-            });
-    };
-
-    // Function to logout a user
-    const logoutUser = () => {
-        Cookies.remove('email', { path: '' });
-        setUser(null);
-    };
-
-    /**
-     * fetching within useEffects
-     */
-
-
-    /**
-     * return jsx
-     */
-
-
     return (
         <>
-            <input
-                type="email"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                placeholder="Enter email"
-            />
-            <button onClick={loginUser}>Log In</button>
-            <button onClick={logoutUser}>Log Out</button>
+        <div className="left-panel"></div>
+        <div className="center-panel">
+            <h1 className="welcome-header">Welcome back!</h1>
+            <h2 className="login-header">Login to your account</h2>
+            <LoginForm> 
+            </LoginForm>
+            <h2 className="login-header">Are you new here?</h2>
+            <Link to={"/register"}>
+                <button className="button">
+                    Create account
+                </button>
+            </Link>
+        </div>
+        <div className="right-panel"></div>
         </>
-
     );
 }

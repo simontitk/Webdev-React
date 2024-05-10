@@ -18,6 +18,23 @@
     color: white;
 }
 
+.filter-category-button {
+    width: 100px;
+    border-radius: 10px;
+    border: 0px solid;
+    height: 30px;
+    font-size: 18px;
+    margin: 10px 0px 0px 0px;
+    background-color: #87C4FF;
+    color: white;
+    font-family: 'Poppins';
+}
+
+.filter-category-button-container {
+    display: flex;
+    justify-content: space-evenly;
+}
+
 .category-checkbox {
     width: 20px;
     height: 20px;

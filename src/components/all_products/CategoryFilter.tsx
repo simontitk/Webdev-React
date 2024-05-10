@@ -15,6 +15,20 @@ export default function CategoryFilter({ categories, selectedCategories, setSele
             setSelectedCategories([...selectedCategories, id]);
         };
     }
+
+
+    function invertSelection() {
+        const temp = categories
+            .map(category => category.id)
+            .filter(cid => !selectedCategories.includes(cid));
+        setSelectedCategories(temp);
+    }
+    
+    
+    function selectAll() {
+        const temp = categories.map(category => category.id);
+        setSelectedCategories(temp);
+    }
     
 
     return (
@@ -30,6 +44,11 @@ export default function CategoryFilter({ categories, selectedCategories, setSele
                     {category.name}
                 </span>
             ))}
+            <div className="filter-category-button-container">
+                <button className="filter-category-button" onClick={selectAll}>Select all</button>
+                <button className="filter-category-button" onClick={invertSelection}>Invert</button>
+            </div>
+
         </>
     );
 }

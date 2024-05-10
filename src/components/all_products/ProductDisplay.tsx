@@ -9,7 +9,7 @@ export default function ProductDisplay({ products }: ProductDisplayProps) {
 
     return (
         <div className="center-panel">
-            <h1 className="filter-result">{products.length} products to hydrate yourself</h1>
+            <h1 className="filter-result">{products.length} {`product${products.length !==1 ? "s" : ""} to hydrate yourself`}</h1>
             <div className="product-section ">
                 { products.map(product => (
                     <ProductCard 
