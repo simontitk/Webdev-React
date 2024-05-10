@@ -13,6 +13,7 @@ export default function ProfileEditor({editedValues, setEditedValues}: ProfileEd
         const name = e.target.name;
         const value = e.target.value;
         setEditedValues({...editedValues, [name]: value});
+        console.log("hul igennem?");
     }
     
     return (
