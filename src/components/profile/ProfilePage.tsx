@@ -1,4 +1,7 @@
+import ProfileDisplay from "./ProfileDisplay";
+import ProfileNavigation from "./ProfileNavigation";
 import "./profile.css";
+/* import {User} from "src\interfaces\interfaces.ts";*/
 
 export default function ProfilePage() {
 
@@ -21,8 +24,13 @@ export default function ProfilePage() {
 
 
     return (
-        <>
-        </>
+        <> 
+        <ProfileNavigation></ProfileNavigation>
+        <ProfileDisplay></ProfileDisplay>
 
+        <div className="right-panel" id="right-panel-profile">
+        </div>
+
+        </>
     );
 }
