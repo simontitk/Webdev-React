@@ -80,5 +80,18 @@ export default function ProfileDisplay({ user }: ProfileDisplayProps) {
 
 
             </div>
+            <div className="center-panel">  
+
+                <ProfileEditor editedValues={editedValues} setEditedValues={setEditedValues}>
+                </ProfileEditor>
+
+                <div className="profile-buttons">
+                    <button className="button" onClick={submitChanges}>Save changes</button>
+                    <button className="button" onClick={resetChanges}>Reset changes</button>
+                </div>
+
+
+
+            </div>
     );
 }
