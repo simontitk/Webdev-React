@@ -12,7 +12,14 @@ interface ProfileFieldEditorProps {
 export default function ProfileFieldEditor({name, field, editedValues, handleChange }: ProfileFieldEditorProps) {
 
     const [isEditing, setIsEditing] = useState<boolean>(false);
+
     const image = (isEditing) ? "checkbox" : "edit";
+
+    function handleBlur() {
+        setTimeout(() => {
+            setIsEditing(false)
+        }, 150);
+    }
 
     return (
         <div className="profile-field-editor">
@@ -20,16 +27,18 @@ export default function ProfileFieldEditor({name, field, editedValues, handleCha
             <div className="profile-info-display">
                 {isEditing ? 
                     <input 
+                        autoFocus
                         className="profile-info-input profile-info"
                         type="text" 
                         value={editedValues[field]} 
                         onChange={handleChange} 
+                        onBlur={handleBlur}
                         name={field}>
                     </input>
                         : 
                     <span className="profile-info-value profile-info"> { editedValues[field] } </span>
                 }
-                <img src={`icons/${image}.png`} width={30} height={30} onClick={()=>setIsEditing(!isEditing)}/>
+                <img src={`icons/${image}.png`} width={30} height={30} onClick={()=>setIsEditing(true)} />
             </div>
         </div>
     );
