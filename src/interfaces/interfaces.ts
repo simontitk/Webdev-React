@@ -56,5 +56,6 @@ export interface Order {
 export interface CartItem {
     uid: number,
     pid: number,
-    quantity: number
+    quantity: number,
+    product: Product
 }
