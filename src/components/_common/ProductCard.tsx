@@ -1,5 +1,7 @@
-import { Link } from "react-router-dom";
 import "./product_card.css";
+import { useContext } from "react";
+import { CartContext, UserContext } from "../../GlobalContext";
+import { addCartItem } from "../../services/cartItemService";
 
 
 interface ProductCardProps {
@@ -14,6 +16,16 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ id, name, description, picture_uri, volume, amount, rating, price }: ProductCardProps) {
+
+    const { user } = useContext(UserContext);
+    const { cart, setCart } = useContext(CartContext);
+
+    function addItem() {
+        if (user) {
+            addCartItem(user.id, id, 1, cart, setCart);
+            alert(`${name} added to cart!`);
+        };
+    }
 
     return (
         <div className="product-card">
@@ -41,7 +53,7 @@ export default function ProductCard({ id, name, description, picture_uri, volume
             </div>
             <div className="product-purchase-container">
                 <span className="product-price">{price} DKK</span>
-                <button className="add-to-cart-button" id="{id}">
+                <button className="add-to-cart-button" onClick={addItem}>
                     Add to cart
                 </button>
             </div>

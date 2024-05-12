@@ -2,25 +2,11 @@ import { useContext } from "react";
 import { CartContext } from "../../GlobalContext";
 import "./cart.css";
 import CartItemCard from "./CartItemCard";
+import { Link } from "react-router-dom";
 
 export default function CartPage() {
 
-    /**
-     * useState declarations
-     */
-
     const { cart } = useContext(CartContext);
-
-
-    /**
-     * helper function declarations
-     */
-
-    /**
-     * fetching within useEffects
-     */
-
-
 
     return (
         <>
@@ -32,7 +18,7 @@ export default function CartPage() {
                     Your Shopping Cart
                 </div>
                 <div className="middle-cart-container">
-                    {cart.map(item => (
+                    {cart.sort((i1, i2) => i1.pid - i2.pid).map(item => (
                         <CartItemCard 
                             key={item.pid}
                             quantity={item.quantity} 
@@ -57,9 +43,9 @@ export default function CartPage() {
                     </div>
                 </div>
                 <div className="bottom-cart-container">
-                    <a href="../templates/all_products.html">
-                    <button className="button" role="button">Continue Shopping</button>
-                    </a>
+                    <Link to={"/all_products"}>
+                        <button className="button" role="button">Continue Shopping</button>
+                    </Link>
                     <button className="button" role="button">Checkout</button>
                 </div>
                 
