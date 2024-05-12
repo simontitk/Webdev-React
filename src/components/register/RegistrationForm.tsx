@@ -2,8 +2,8 @@ import { useState } from "react"
 import { useNavigate } from 'react-router-dom';
 
     interface Errors {
-        firstName?: string;
-        lastName?: string;
+        first_name?: string;
+        last_name?: string;
         email?: string;
         phone?: string;
         street?: string;
@@ -14,8 +14,8 @@ import { useNavigate } from 'react-router-dom';
 export default function RegistrationForm() {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
-        firstName: '',
-        lastName: '',
+        first_name: '',
+        last_name: '',
         email: '',
         phone: '',
         street: '',
@@ -37,17 +37,17 @@ export default function RegistrationForm() {
         const newErrors: Errors = {};
 
         // Check first name
-        if (!formData.firstName) {
-            newErrors.firstName = 'First name is required';
-        } else if (formData.firstName.length > 15) {
-            newErrors.firstName = 'First name must be less than 15 characters';
+        if (!formData.first_name) {
+            newErrors.first_name = 'First name is required';
+        } else if (formData.first_name.length > 15) {
+            newErrors.first_name = 'First name must be less than 15 characters';
         }
 
         // Check last name
-        if (!formData.lastName) {
-            newErrors.lastName = 'Last name is required';
-        } else if (formData.lastName.length > 50) {
-            newErrors.lastName = 'Last name must be less than 50 characters';
+        if (!formData.last_name) {
+            newErrors.last_name = 'Last name is required';
+        } else if (formData.last_name.length > 50) {
+            newErrors.last_name = 'Last name must be less than 50 characters';
         }
 
         // Check email
@@ -127,25 +127,25 @@ export default function RegistrationForm() {
 
     return(
         <form onSubmit={handleSubmit} className="form">
-            <label htmlFor="firstName">First name: </label>
+            <label htmlFor="first_name">First name: </label>
             <input className="input" 
-                    id="firstName" 
-                    name="firstName"
+                    id="first_name" 
+                    name="first_name"
                     type="text" 
-                    value={formData.firstName}
+                    value={formData.first_name}
                     onChange={handleChange} 
                     placeholder="Enter first name"/>
-            {errors.firstName && <div style={{ color: 'red' }}>{errors.firstName}</div>}
+            {errors.first_name && <div style={{ color: 'red' }}>{errors.first_name}</div>}
 
-            <label htmlFor="lastName">Last name: </label>
+            <label htmlFor="last_name">Last name: </label>
             <input className="input" 
-                    id="lastName" 
-                    name="lastName" 
+                    id="last_name" 
+                    name="last_name" 
                     type="text" 
-                    value={formData.lastName}
+                    value={formData.last_name}
                     onChange={handleChange} 
                     placeholder="Enter last name"/>
-            {errors.lastName && <div style={{ color: 'red' }}>{errors.lastName}</div>}
+            {errors.last_name && <div style={{ color: 'red' }}>{errors.last_name}</div>}
 
             <label htmlFor="email">Email address: </label>
             <input className="input" 
