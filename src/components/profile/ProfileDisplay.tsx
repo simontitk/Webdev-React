@@ -3,6 +3,7 @@ import { User } from "../../interfaces/interfaces";
 import ProfileEditor from "./ProfileEditor";
 import Cookies from "js-cookie";
 import { UserContext } from "../../GlobalContext";
+import OrderDisplay from "../orders/OrderDisplay";
 
 
 interface ProfileDisplayProps {
@@ -60,6 +61,9 @@ export default function ProfileDisplay({ user }: ProfileDisplayProps) {
                     <button className="button" onClick={resetChanges}>Reset changes</button>
                 </div>
                 
+                <OrderDisplay>
+                </OrderDisplay>
+
             </div>
     );
 }

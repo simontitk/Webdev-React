@@ -49,7 +49,7 @@ export interface Order {
     order_date: string,
     uid: number,
     user: User,
-    prouducts: OrderProducts[]
+    products: OrderProducts[]
 }
 
 
