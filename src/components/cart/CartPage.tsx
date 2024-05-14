@@ -37,18 +37,7 @@ export default function CartPage() {
                     </div>
                     <div className="middle-cart-container">
                         {cart.sort((i1, i2) => i1.pid - i2.pid).map(item => (
-                            <CartItemCard 
-                                key={item.pid}
-                                quantity={item.quantity} 
-                                uid={item.uid}
-                                pid={item.pid} 
-                                name={item.product.name}
-                                description={item.product.description}
-                                picture_uri={item.product.picture_uri}
-                                volume={item.product.volume}
-                                amount={item.product.amount}
-                                price={item.product.price}>
-                            </CartItemCard>
+                            <CartItemCard item={item} key={item.pid}></CartItemCard>
                         ))}
                     </div>
                     <div className="subtotal-cart-container">

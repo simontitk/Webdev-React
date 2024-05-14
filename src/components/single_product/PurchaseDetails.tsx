@@ -20,8 +20,10 @@ export default function PurchaseDetails() {
     };
 
     function addToCart() {
-        if (!!user && !!product) {
-            addCartItem(user.id, product.id, quantity, cart, setCart);
+        console.log(product);
+        console.log(cart);
+        if (!!product) {
+            addCartItem(product, quantity, cart, setCart, user?.id);
         }
     }
 

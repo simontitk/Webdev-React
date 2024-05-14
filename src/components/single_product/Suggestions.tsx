@@ -14,18 +14,8 @@ export default function Suggestions() {
                 {products && products.sort(() =>
                     0.5 - Math.random())
                     .slice(0, 3)
-                    .map((product, i) => (
-                        <ProductCard
-                            key={i}
-                            id={product.id}
-                            name={product.name}
-                            description={product.description}
-                            picture_uri={product.picture_uri}
-                            volume={product.volume}
-                            amount={product.amount}
-                            rating={product.rating}
-                            price={product.price}
-                        />
+                    .map(product => (
+                        <ProductCard product={product} key={product.id}/>
                     ))}
             </section>
         </div>

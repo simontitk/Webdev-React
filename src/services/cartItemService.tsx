@@ -1,37 +1,62 @@
-import { CartItem } from "../interfaces/interfaces";
+import { CartItem, Product } from "../interfaces/interfaces";
+import Cookies from 'js-cookie';
 
     
-export function addCartItem(uid: number, pid: number, quantity: number, cart: CartItem[], setCart: Function) {
-    fetch(`http://localhost:3000/cart_items/${uid}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ "pid": pid, "quantity": quantity })
-    })
-    .then(res => res.json())
-    .then(data => {setCart([...cart.filter(i => i.pid !== pid), data.item])})
-    .catch(err => console.log(err));
+export function addCartItem(product: Product, quantity: number, cart: CartItem[], setCart: Function, uid?: number ) {
+
+    if (uid !== undefined) {
+        fetch(`http://localhost:3000/cart_items/${uid}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ "pid": product.id, "quantity": quantity })
+        })
+        .then(res => res.json())
+        .then(data => {setCart([...cart.filter(i => i.product.id !== product.id), data.item])})
+        .catch(err => console.log(err));
+    }
+    else {
+        const newCartItem: CartItem = {pid: product.id, quantity: quantity, product: product}; 
+        const newCart = [...cart.filter(i => i.pid !== product.id), newCartItem]
+        setCart(newCart);
+        Cookies.set("cart", JSON.stringify(newCart));
+    }
 }
 
 
-export function removeCartItem(uid: number, pid: number, cart: CartItem[], setCart: Function) {
-    fetch(`http://localhost:3000/cart_items/${uid}`, {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ "pid": pid})
-    })
-    .then(res => res.json())
-    .then(() => setCart([...cart.filter(i => i.pid !== pid)]))
-    .catch(err => console.log(err));
+export function removeCartItem(product: Product, cart: CartItem[], setCart: Function, uid?: number ) {
+    if (uid !== undefined) {
+        fetch(`http://localhost:3000/cart_items/${uid}`, {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ "pid": product.id})
+        })
+        .then(res => res.json())
+        .then(() => setCart([...cart.filter(i => i.pid !== product.id)]))
+        .catch(err => console.log(err));
+    }
+    else {
+        const newCart = [...cart.filter(i => i.pid !== product.id)]
+        setCart(newCart);
+        Cookies.set("cart", JSON.stringify(newCart));
+
+    }
 }
  
  
-export function updateCartItem(uid: number, pid: number, quantity: number, cart: CartItem[], setCart: Function) {
-    fetch(`http://localhost:3000/cart_items/${uid}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ "pid": pid, "quantity": quantity })
-    })
-    .then(res => res.json())
-    .then(data => setCart([...cart.filter(i => i.pid !== pid), data.item]))
-    .catch(err => console.log(err));
+export function updateCartItem(product: Product, quantity: number, cart: CartItem[], setCart: Function, uid?: number) {
+    if (uid !== undefined) {
+        fetch(`http://localhost:3000/cart_items/${uid}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ "pid": product.id, "quantity": quantity })
+        })
+        .then(res => res.json())
+        .then(data => setCart([...cart.filter(i => i.pid !== product.id), data.item]))
+        .catch(err => console.log(err));
+    }
+    else {
+        const newCartItem: CartItem = {pid: product.id, quantity: quantity, product: product}; 
+        const newCart = [...cart.filter(i => i.pid !== product.id), newCartItem];
+        setCart(newCart);
+        Cookies.set("cart", JSON.stringify(newCart));    }
 }

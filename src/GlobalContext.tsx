@@ -74,6 +74,15 @@ export default function GlobalContext({ children }: GlobalContextProps) {
             .catch(err => console.log(err));
     }, []);
 
+
+    useEffect(() => {
+        if (!user) {
+            const storedCart = JSON.parse(Cookies.get("cart") || "[]");
+            setCart(storedCart);
+        }
+    }, []);
+
+
     useEffect(() => {
         if (user) {
             const id = user.id

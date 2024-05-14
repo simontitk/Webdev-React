@@ -7,6 +7,10 @@ import FrontpageSection from "./FrontpageSection";
 import "./home.css";
 import { CategoryContext, ProductContext } from "../../GlobalContext";
 
+interface ProductCardProps {
+    product: Product
+}
+
 export default function HomePage() {
 
     const { products } = useContext(ProductContext);
@@ -23,12 +27,12 @@ export default function HomePage() {
                     data={categories}
                     style="category-display">
                 </FrontpageSection>
-                <FrontpageSection<Product>
+{/*                 <FrontpageSection<ProductCardProps>
                     header="Latest offers:"
                     Component={ProductCard}
                     data={products.slice(0, 3)}
                     style="offer-display">
-                </FrontpageSection>
+                </FrontpageSection> */}
             </div>
             <div className="right-panel"></div>
         </>

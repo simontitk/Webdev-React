@@ -12,17 +12,7 @@ export default function ProductDisplay({ products }: ProductDisplayProps) {
             <h1 className="filter-result">{products.length} {`product${products.length !==1 ? "s" : ""} to hydrate yourself`}</h1>
             <div className="product-section ">
                 { products.map(product => (
-                    <ProductCard 
-                        key={product.id}
-                        id={product.id} 
-                        name={product.name} 
-                        description={product.description} 
-                        picture_uri={product.picture_uri} 
-                        volume={product.volume} 
-                        amount={product.amount} 
-                        rating={product.rating} 
-                        price={product.price}>
-                    </ProductCard>
+                    <ProductCard key={product.id} product={product}></ProductCard>
                 ))}
             </div>
         </div>

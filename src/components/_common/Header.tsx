@@ -1,9 +1,7 @@
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
-import { UserContext } from "../../GlobalContext";
+import { CartContext, UserContext } from "../../GlobalContext";
 import Cookies from 'js-cookie';
-
-
 
 
 export default function Header() {
@@ -11,10 +9,12 @@ export default function Header() {
     function logout() {
         Cookies.remove("user", {path: ""})
         setUser(null);
+        setCart([]);
     }
 
     const [isToggled, setIsToggled] = useState<boolean>(true);
-    const { user, setUser } = useContext(UserContext)
+    const { user, setUser } = useContext(UserContext);
+    const { setCart }= useContext(CartContext);
 
     return (
         <header className="header-container">
