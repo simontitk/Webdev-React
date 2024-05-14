@@ -42,6 +42,17 @@ body {
     color: floralwhite;
 }
 
+.disabled-button {
+    font-size: 20px;
+    color: white;
+    margin-top: 10px;
+    background: linear-gradient(1deg, #585858, #8b8a8a);;
+    border: none;
+    border-radius: 50px;
+    padding: 10px 25px;
+    cursor:not-allowed
+}
+
 a {
     text-decoration: none;
     color: inherit;
