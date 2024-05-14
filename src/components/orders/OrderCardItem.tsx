@@ -13,6 +13,7 @@ export default function OrderCardItem({quantity, name, price, picture_uri, descr
             <span>{quantity} x {name}</span>
             <span>{price} DKK</span>
             <img
+                className="order-image"
                 src={`http://localhost:3000/images/products/${picture_uri}`}
                 alt={description}
                 height="80px">

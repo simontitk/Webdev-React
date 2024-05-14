@@ -3,15 +3,21 @@
     padding: 3%;
 }
 
+.order-display-header {
+    color: white;
+    margin: 0px;
+}
+
 .order-card {
     background-color: white;
     font-size: 16px;
+    margin: 15px 0px 15px 0px;
 }
 
 .order-card-header {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
+    display: grid;
+    grid-template-columns: minmax(300px, 1fr) 1fr 1fr;
+    justify-items: center;
     align-items: center;
     min-height: 50px;   
 }
@@ -47,14 +53,30 @@
     display: none;
 }
 
-
-
 .order-card-body {
     border-top: 2px solid black;
+    padding-block: 10px;
 }
 
 .order-card-item {
-    display: flex;
-    justify-content: space-around;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    justify-items: center;
     align-items: center;
+    min-height: 60px;
+}
+
+.order-image {
+    max-width: 60px;
+    max-height: 60px;
+    height: auto;
+    width: auto;
+}
+
+@media only screen and (max-width: 950px) {
+
+    .order-card-header {
+        grid-template-columns: none;
+        grid-template-rows: 1fr 1fr 1fr;
+    }
 }

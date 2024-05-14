@@ -42,6 +42,7 @@ export default function OrderCard({totalPrice, orderDate, orderProducts}: OrderC
             <div className={`order-card-body ${isToggled && "toggled"}`}>
                 {orderProducts.map(op => 
                     <OrderCardItem 
+                        key={op.pid}
                         quantity={op.quantity} 
                         name={op.product.name} 
                         price={op.product.price} 
