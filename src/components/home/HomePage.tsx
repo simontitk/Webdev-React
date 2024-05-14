@@ -1,15 +1,10 @@
 import { useContext } from "react";
-import { Category, Product } from "../../interfaces/interfaces";
+import { CategoryContext, ProductContext } from "../../GlobalContext";
 import CategoryCard from "./CategoryCard";
 import LandingSection from "./LandingSection";
 import ProductCard from "../_common/ProductCard";
-import FrontpageSection from "./FrontpageSection";
 import "./home.css";
-import { CategoryContext, ProductContext } from "../../GlobalContext";
 
-interface ProductCardProps {
-    product: Product
-}
 
 export default function HomePage() {
 
@@ -20,19 +15,31 @@ export default function HomePage() {
         <>
             <div className="left-panel"></div>
             <div className="center-panel">
+
                 <LandingSection></LandingSection>
-                <FrontpageSection<Category>
-                    header="Browse our categories:"
-                    Component={CategoryCard} 
-                    data={categories}
-                    style="category-display">
-                </FrontpageSection>
-{/*                 <FrontpageSection<ProductCardProps>
-                    header="Latest offers:"
-                    Component={ProductCard}
-                    data={products.slice(0, 3)}
-                    style="offer-display">
-                </FrontpageSection> */}
+
+                <section className="frontpage-section">
+                    <h1 className="frontpage-section-header">
+                        Browse our categories:
+                    </h1>
+                    <div className="category-display">
+                        { categories.map(item=> 
+                            <CategoryCard key={item.id} id={item.id} name={item.name} description={item.description} ></CategoryCard>
+                        )}
+                    </div>
+                </section>
+
+                <section className="frontpage-section">
+                    <h1 className="frontpage-section-header">
+                        Latest offers:
+                    </h1>
+                    <div className="offer-display">
+                        { products.slice(0, 3).map(item=> (
+                            <ProductCard key={item.id} product={item}></ProductCard>
+                        ))}
+                    </div>
+                </section>
+
             </div>
             <div className="right-panel"></div>
         </>
