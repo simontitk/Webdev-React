@@ -1,10 +1,11 @@
 .editor-container {
     display: flex;
     flex-direction: row;
+    justify-content: space-evenly;
+    gap: 20px;
 }
 
 .profile-data-editor {
-    min-width: 50%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -14,6 +15,7 @@
     display: flex;
     flex-direction: column;
     min-width: 235px;
+    max-width: 235px;
 }
 
 .profile-info-display {
@@ -48,21 +50,7 @@
     padding-block: 30px;
 }
 
-@media only screen and (max-width: 950px) {
-
-    .profile-buttons {
-        flex-direction: column;
-        gap: 10px;
-    }
-    .center-panel {
-        padding: 0px;
-    }
-
-    .profile-editor {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
+@media only screen and (max-width: 600px) {
 
     .editor-container {
         flex-direction: column;
