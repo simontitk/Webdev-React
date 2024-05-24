@@ -6,11 +6,12 @@ interface ProfileFieldEditorProps {
     field: keyof User,
     editedValues: User,
     errors: UserErrors,
+    hideInfo?: boolean,
     handleChange: React.ChangeEventHandler<HTMLInputElement>
 
 }
 
-export default function ProfileFieldEditor({name, field, editedValues, errors, handleChange }: ProfileFieldEditorProps) {
+export default function ProfileFieldEditor({name, field, editedValues, errors, hideInfo=false, handleChange }: ProfileFieldEditorProps) {
 
     const [isEditing, setIsEditing] = useState<boolean>(false);
 
@@ -24,7 +25,7 @@ export default function ProfileFieldEditor({name, field, editedValues, errors, h
 
     return (
         <div className="profile-field-editor">
-            <h2>{name}</h2>
+            <h3>{name}</h3>
             <div className="profile-info-display">
                 {isEditing ? 
                     <input 
@@ -37,7 +38,7 @@ export default function ProfileFieldEditor({name, field, editedValues, errors, h
                         name={field}>
                     </input>
                         : 
-                    <span className="profile-info-value profile-info"> { editedValues[field] } </span>
+                    <span className="profile-info-value profile-info"> { (hideInfo) ? "****" : editedValues[field]} </span>
                 }
                 <img src={`icons/${image}.png`} width={30} height={30} onClick={()=>setIsEditing(true)} />
             </div>
