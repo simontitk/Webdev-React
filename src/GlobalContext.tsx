@@ -8,19 +8,9 @@ interface ProductContextValue {
     setProducts: Function
 }
 
-interface SelectedProductContextValue {
-    selectedProducts: Product[],
-    setSelectedProducts: Function
-}
-
 interface CategoryContextValue {
     categories: Category[],
     setCategories: Function
-}
-
-interface SelectedCategoryContextValue {
-    selectedCategories: number[],
-    setSelectedCategories: Function
 }
 
 interface UserContextValue {
@@ -39,9 +29,7 @@ interface CartContextValue {
 
 
 export const ProductContext = createContext<ProductContextValue>({ products: [], setProducts: () => { } });
-export const SelectedProductContext = createContext<SelectedProductContextValue>({ selectedProducts: [], setSelectedProducts: () => { } });
 export const CategoryContext = createContext<CategoryContextValue>({ categories: [], setCategories: () => { } });
-export const SelectedCategoryContext = createContext<SelectedCategoryContextValue>({ selectedCategories: [], setSelectedCategories: () => { } });
 export const UserContext = createContext<UserContextValue>({ user: null, setUser: () => { } });
 export const CartContext = createContext<CartContextValue>({ cart: [], setCart: () => { } });
 
@@ -50,16 +38,14 @@ export default function GlobalContext({ children }: GlobalContextProps) {
 
     const loggedInUser = JSON.parse(Cookies.get("user") || 'null')
     const [products, setProducts] = useState<Product[]>([]);
-    const [selectedProducts, setSelectedProducts] = useState<Product[]>([]);
     const [categories, setCategories] = useState<Category[]>([]);
-    const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
     const [user, setUser] = useState<User | null>(loggedInUser);
     const [cart, setCart] = useState<CartItem[]>([]);
 
     useEffect(() => {
         fetch("http://localhost:3000/products/")
             .then(respone => respone.json())
-            .then((data: Product[]) => { setProducts(data); setSelectedProducts(data) })
+            .then((data: Product[]) => setProducts(data))
             .catch(err => console.log(err));
     }, []);
 
@@ -67,10 +53,7 @@ export default function GlobalContext({ children }: GlobalContextProps) {
     useEffect(() => {
         fetch("http://localhost:3000/categories/")
             .then(respone => respone.json())
-            .then((data: Category[]) => {
-                setCategories(data);
-                setSelectedCategories(data.map(category => category.id))
-            })
+            .then((data: Category[]) => setCategories(data))
             .catch(err => console.log(err));
     }, []);
 
@@ -99,13 +82,11 @@ export default function GlobalContext({ children }: GlobalContextProps) {
     return (
         <UserContext.Provider value={{ user, setUser }}>
             <CategoryContext.Provider value={{ categories, setCategories }}>
-                <SelectedCategoryContext.Provider value={{ selectedCategories, setSelectedCategories }}>
                     <ProductContext.Provider value={{ products, setProducts }}>
                         <CartContext.Provider value={{ cart, setCart }}>
                             {children}
                         </CartContext.Provider>
                     </ProductContext.Provider>
-                </SelectedCategoryContext.Provider>
             </CategoryContext.Provider>
         </UserContext.Provider>
     );
