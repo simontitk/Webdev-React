@@ -3,7 +3,7 @@ import { User, UserErrors } from "../../interfaces/interfaces";
 
 interface ProfileFieldEditorProps {
     name: string,
-    field: keyof User,
+    field: "first_name" | "last_name" | "email" | "phone" | "city" | "street" | "password" | "payment_method",
     editedValues: User,
     errors: UserErrors,
     hideInfo?: boolean,
@@ -16,6 +16,7 @@ export default function ProfileFieldEditor({name, field, editedValues, errors, h
     const [isEditing, setIsEditing] = useState<boolean>(false);
 
     const image = (isEditing) ? "checkbox" : "edit";
+    const displayedValue = (hideInfo) ? "*".repeat(editedValues[field].length)  : editedValues[field];
 
     function handleBlur() {
         setTimeout(() => {
@@ -38,7 +39,7 @@ export default function ProfileFieldEditor({name, field, editedValues, errors, h
                         name={field}>
                     </input>
                         : 
-                    <span className="profile-info-value profile-info"> { (hideInfo) ? "****" : editedValues[field]} </span>
+                    <span className="profile-info-value profile-info"> {displayedValue} </span>
                 }
                 <img src={`icons/${image}.png`} width={30} height={30} onClick={()=>setIsEditing(true)} />
             </div>
