@@ -1,7 +1,7 @@
 import Cookies from "js-cookie";
 import { useContext, useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import { UserContext } from "../../GlobalContext";
+import { MessageContext, UserContext } from "../../GlobalContext";
 
 interface Errors {
     message?: string;
@@ -9,6 +9,7 @@ interface Errors {
 
 export default function LoginForm() {
     const { setUser } = useContext(UserContext);
+    const {addMessage } = useContext(MessageContext);
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [errors, setErrors] = useState<Errors>({});
@@ -39,12 +40,15 @@ export default function LoginForm() {
                 }
             })
             .then(data => {
-                console.log(data)
                 setUser(data);
                 Cookies.set("user", JSON.stringify(data), { expires: 7, path: "" });
+                addMessage("Login successful.", "success");
                 navigate('/');
             })
-            .catch(err => setErrors({ message: err.message }));
+            .catch(err => {
+                setErrors({ message: err.message });
+                addMessage("Error when logging in.", "error");
+            });
     };
 
 

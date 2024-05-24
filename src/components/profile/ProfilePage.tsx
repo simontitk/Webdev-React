@@ -1,8 +1,9 @@
 import { Navigate } from "react-router-dom";
 import { useContext } from "react";
 import { UserContext } from "../../GlobalContext";
-import ProfileDisplay from "./ProfileDisplay";
 import "./profile.css";
+import ProfileEditor from "./ProfileEditor";
+import OrderDisplay from "../orders/OrderDisplay";
 
 export default function ProfilePage() {
 
@@ -17,7 +18,12 @@ export default function ProfilePage() {
             <> 
                 <div className="left-panel">
                 </div>
-                <ProfileDisplay user={user}></ProfileDisplay>
+                <div className="center-panel">  
+                    <ProfileEditor user={user}>
+                    </ProfileEditor>
+                    <OrderDisplay>
+                    </OrderDisplay>
+                </div>
                 <div className="right-panel">
                 </div>
             </>

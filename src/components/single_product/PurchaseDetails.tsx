@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { CartContext, UserContext } from "../../GlobalContext";
+import { CartContext, MessageContext, UserContext } from "../../GlobalContext";
 import { ProductContext } from "./ProductContext";
 import { addCartItem } from "../../services/cartItemService";
 
@@ -8,6 +8,7 @@ export default function PurchaseDetails() {
     const [quantity, setQuantity] = useState(1);
     const { user } = useContext(UserContext);
     const { cart, setCart } = useContext(CartContext);
+    const { addMessage } = useContext(MessageContext);
     const product = useContext(ProductContext);
 
 
@@ -20,10 +21,9 @@ export default function PurchaseDetails() {
     };
 
     function addToCart() {
-        console.log(product);
-        console.log(cart);
         if (!!product) {
             addCartItem(product, quantity, cart, setCart, user?.id);
+            addMessage(`${product.name} added to cart!`, "success")
         }
     }
 
