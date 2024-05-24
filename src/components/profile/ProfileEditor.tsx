@@ -2,7 +2,7 @@ import ProfileFieldEditor from "./ProfileFieldEditor";
 import { useContext, useState } from "react";
 import { User, UserErrors } from "../../interfaces/interfaces";
 import Cookies from "js-cookie";
-import { UserContext } from "../../GlobalContext";
+import { MessageContext, UserContext } from "../../GlobalContext";
 import PaymentSelector from "./PaymentSelector";
 
 
@@ -15,6 +15,7 @@ export default function ProfileEditor({ user }: ProfileEditorProps) {
     const [editedValues, setEditedValues] = useState<User>({...user});
     const [errors, setErrors]= useState<UserErrors>({});
     const {setUser} = useContext(UserContext);
+    const { addMessage } = useContext(MessageContext);
 
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
@@ -39,8 +40,12 @@ export default function ProfileEditor({ user }: ProfileEditorProps) {
             newErrors.street = "Address must contain a house number."
         if (editedValues.password.length < 1) 
             newErrors.password = "Password cannot be empty."
+        const errorCount = Object.keys(newErrors).length;
         setErrors(newErrors);
-        return Object.keys(newErrors).length === 0;
+        if (errorCount) {
+            addMessage(`Error with ${errorCount} field${(errorCount == 1) ? "" : "s"}.`, "error");
+        }
+        return errorCount === 0;
     }
 
 
@@ -56,7 +61,7 @@ export default function ProfileEditor({ user }: ProfileEditorProps) {
             .then(data => {
                 setUser(data["user"])
                 Cookies.set("user", JSON.stringify(data["user"]), { expires: 7, path: "" });
-                alert(data["message"])
+                addMessage("Changes saved successfully!", "success");
             })
             .catch(err => console.log(err));
         }
@@ -68,6 +73,8 @@ export default function ProfileEditor({ user }: ProfileEditorProps) {
         if (result) {
             setEditedValues(user);
             setErrors({});
+            addMessage("Changes discarded.", "success");
+            return;
         }
     }
     

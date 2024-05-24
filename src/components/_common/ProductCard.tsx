@@ -1,6 +1,6 @@
 import "./product_card.css";
 import { useContext } from "react";
-import { CartContext, UserContext } from "../../GlobalContext";
+import { CartContext, MessageContext, UserContext } from "../../GlobalContext";
 import { addCartItem } from "../../services/cartItemService";
 import { Product } from "../../interfaces/interfaces";
 
@@ -12,12 +12,11 @@ export default function ProductCard({ product }: ProductCardProps) {
 
     const { user } = useContext(UserContext);
     const { cart, setCart } = useContext(CartContext);
+    const { addMessage } = useContext(MessageContext);
 
     function addItem() {
-        console.log(product);
-        console.log(cart);
         addCartItem(product, 1, cart, setCart, user?.id);
-        alert(`${name} added to cart!`);
+        addMessage(`${product.name} added to cart!`, "success")
     }
 
     return (

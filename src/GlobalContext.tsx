@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import { CartItem, Category, Product, User } from "./interfaces/interfaces";
+import { CartItem, Category, Message, Product, User } from "./interfaces/interfaces";
 import Cookies from 'js-cookie';
 
 
@@ -27,11 +27,17 @@ interface CartContextValue {
     setCart: Function
 }
 
+interface MessageContextValue {
+    messages: Message[],
+    addMessage: (text: string, type: "success" | "error") => void
+}
+
 
 export const ProductContext = createContext<ProductContextValue>({ products: [], setProducts: () => { } });
 export const CategoryContext = createContext<CategoryContextValue>({ categories: [], setCategories: () => { } });
 export const UserContext = createContext<UserContextValue>({ user: null, setUser: () => { } });
 export const CartContext = createContext<CartContextValue>({ cart: [], setCart: () => { } });
+export const MessageContext = createContext<MessageContextValue>({messages: [], addMessage: ()=>{}});
 
 
 export default function GlobalContext({ children }: GlobalContextProps) {
@@ -41,6 +47,17 @@ export default function GlobalContext({ children }: GlobalContextProps) {
     const [categories, setCategories] = useState<Category[]>([]);
     const [user, setUser] = useState<User | null>(loggedInUser);
     const [cart, setCart] = useState<CartItem[]>([]);
+    const [messages, setMessages] = useState<Message[]>([]);
+
+
+    function addMessage(text: string, type: "success" | "error") {
+        const newMessage = {text: text, type: type, time: Date.now()};
+        setMessages(oldMessages => [...oldMessages, newMessage]);
+        setTimeout(() => {
+            setMessages((prevMessages) => prevMessages.filter(m => m !== newMessage));
+        }, 2000);
+    }
+
 
     useEffect(() => {
         fetch("http://localhost:3000/products/")
@@ -80,6 +97,8 @@ export default function GlobalContext({ children }: GlobalContextProps) {
 
 
     return (
+        <MessageContext.Provider value={{messages, addMessage}}>
+
         <UserContext.Provider value={{ user, setUser }}>
             <CategoryContext.Provider value={{ categories, setCategories }}>
                     <ProductContext.Provider value={{ products, setProducts }}>
@@ -89,6 +108,7 @@ export default function GlobalContext({ children }: GlobalContextProps) {
                     </ProductContext.Provider>
             </CategoryContext.Provider>
         </UserContext.Provider>
+        </MessageContext.Provider>
     );
 
 }

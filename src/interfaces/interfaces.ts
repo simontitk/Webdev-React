@@ -71,3 +71,10 @@ export interface CartItem {
     quantity: number,
     product: Product
 }
+
+export interface Message {
+    text: string,
+    type: "success" | "error"
+    time: number
+
+}

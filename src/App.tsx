@@ -12,6 +12,7 @@ import ProfilePage from "./components/profile/ProfilePage";
 import RegisterPage from "./components/register/RegisterPage";
 import SingleProductPage from "./components/single_product/SingleProductPage";
 import "./styles.css";
+import MessageContainer from "./components/_common/MessageContainer";
 
 
 export default function App() {
@@ -19,7 +20,8 @@ export default function App() {
     return (
         <GlobalContext>
             <BrowserRouter>
-                <Header userName={""} isLoggedIn={false}></Header>
+                <Header></Header>
+                <MessageContainer></MessageContainer>
                 <Layout>
                     <Routes>
                         <Route element={<HomePage />} path="/"/>
