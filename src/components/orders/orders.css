@@ -53,6 +53,11 @@
     display: none;
 }
 
+.untoggled {
+    background-color: #87C4FF;
+}
+
+
 .order-card-body {
     border-top: 2px solid black;
     padding-block: 10px;

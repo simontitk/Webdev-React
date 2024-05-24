@@ -35,6 +35,19 @@ export interface User {
 }
 
 
+export interface UserErrors {
+    id?: string,
+    first_name?: string,
+    last_name?: string,
+    email?: string,
+    phone?: string,
+    city?: string,
+    street?: string,
+    password?: string,
+    payment_method?: string
+}
+
+
 export interface OrderProducts {
     oid: number,
     pid: number,

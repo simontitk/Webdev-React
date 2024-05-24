@@ -1,15 +1,16 @@
 import { useState } from "react";
-import { User } from "../../interfaces/interfaces";
+import { User, UserErrors } from "../../interfaces/interfaces";
 
 interface ProfileFieldEditorProps {
     name: string,
     field: keyof User,
     editedValues: User,
+    errors: UserErrors,
     handleChange: React.ChangeEventHandler<HTMLInputElement>
 
 }
 
-export default function ProfileFieldEditor({name, field, editedValues, handleChange }: ProfileFieldEditorProps) {
+export default function ProfileFieldEditor({name, field, editedValues, errors, handleChange }: ProfileFieldEditorProps) {
 
     const [isEditing, setIsEditing] = useState<boolean>(false);
 
@@ -40,6 +41,11 @@ export default function ProfileFieldEditor({name, field, editedValues, handleCha
                 }
                 <img src={`icons/${image}.png`} width={30} height={30} onClick={()=>setIsEditing(true)} />
             </div>
+            {errors[field] && 
+                <div className="profile-error-display">
+                    {errors[field]}
+                </div>
+            }
         </div>
     );
 }

@@ -23,6 +23,11 @@
     font-family: 'Poppins';
 }
 
+.profile-error-display {
+    font-weight: 800;
+    color: red;
+}
+
 .profile-buttons {
     display: flex;
     align-items: center;
