@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { CartContext, UserContext } from "../../GlobalContext";
 import { removeCartItem, updateCartItem } from "../../services/cartItemService";
 import { CartItem, Product } from "../../interfaces/interfaces";
+import "./cart.css";
 
 interface CartItemCardProps {
     item: CartItem
@@ -13,7 +14,7 @@ export default function CartItemCard({item}: CartItemCardProps) {
         const { user } = useContext(UserContext);
 
         return (
-            <div>
+            <div className="basket-item-row">
                 <div className="basket-item-left-container" id="{id}"> 
                     <img className="basket-item-image" width={65} height={65} src={`http://localhost:3000/images/products/${item.product.picture_uri}`} alt={item.product.description}/>
                     <div className="basket-item-name-container">
