@@ -1,8 +1,6 @@
 .center-panel {
     display: flex;
     flex-direction: column;
-    padding: 20px;
-
 }
 
 form, label {
@@ -42,4 +40,8 @@ form, label {
 .error-message {
     color: red;
     font-weight: bold;
+}
+
+.login-page {
+    padding: 20px
 }
