@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { Link } from "react-router-dom";
-import { CartContext, UserContext } from "../../GlobalContext";
+import { CartContext, MessageContext, UserContext } from "../../GlobalContext";
 import CartItemCard from "./CartItemCard";
 import "./cart.css";
 
@@ -8,8 +8,9 @@ export default function CartPage() {
 
     const { cart } = useContext(CartContext);
     const { user } = useContext(UserContext);
-    const totalPrice = cart.map(item => item.quantity * item.product.price).reduce((sum,price) => sum+price, 0).toFixed(2)
 
+    const { addMessage } = useContext(MessageContext);
+    const totalPrice = cart.map(item => item.quantity * item.product.price).reduce((sum,price) => sum+price, 0).toFixed(2)
 
     function sendOrder() {
         const confirmCheckout = window.confirm(`Confirm order checkout of ${totalPrice} DKK?`);
@@ -20,8 +21,10 @@ export default function CartPage() {
                 body: JSON.stringify({productQuantites: cart})
             })
             .then(response => response.json())
-            .then(data => alert(data.message))
+            .then(() => addMessage("Order successfully processed.", "success"))
             .catch(err =>console.log(err));
+        } else {
+            addMessage("Order canceled.", "success");
         }
     }
 

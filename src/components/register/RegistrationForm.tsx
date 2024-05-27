@@ -1,5 +1,6 @@
-import { useState } from "react"
+import { useContext, useState } from "react"
 import { useNavigate } from 'react-router-dom';
+import { MessageContext } from "../../GlobalContext";
 
     interface Errors {
         first_name?: string;
@@ -24,6 +25,7 @@ export default function RegistrationForm() {
     });
 
     const [errors, setErrors] = useState<Errors>({});
+    const { addMessage} = useContext(MessageContext);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -101,13 +103,17 @@ export default function RegistrationForm() {
             // Form is valid, perform form submission logic here
             try {
                 // Send a POST request to the server with formData
-                await fetch('http://localhost:3000/users/', {
+                const response = await fetch('http://localhost:3000/users/', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify(formData),
                 });
+                if (response.ok) {
+                    addMessage("Successful registration.", "success");
+
+                }
 
             } catch (error) {
                 // Handle fetch errors
@@ -118,14 +124,13 @@ export default function RegistrationForm() {
                     serverError: 'An error occurred during registration.',
                 }));
             }
-            console.log('Form submitted with:', formData);
             navigate('/login');
         } else {
-            console.log('Form contains errors:', errors);
+            addMessage(`Invalid registration form.`, "error");
         }
     };
 
-    return(
+    return (
         <form onSubmit={handleSubmit} className="form">
             <label htmlFor="first_name">First name: </label>
             <input className="input" 

@@ -26,10 +26,10 @@ export default function OrderCard({totalPrice, orderDate, orderProducts}: OrderC
     
     return (
         <div className="order-card">
-            <div className="order-card-header">
+            <div className={`order-card-header ${!isToggled && "untoggled"}`}>
                 <div className="order-date">Ordered: <strong>{dateFormat}</strong></div>
                 <div className="order-price">Total: <strong>{totalPrice.toFixed(2)} DKK</strong></div>
-                <button className="order-collapse" onClick={() => setIsToggled(!isToggled)}>
+                <button className={`order-collapse ${!isToggled && "untoggled"}`} onClick={() => setIsToggled(!isToggled)}>
                     See details
                     <img 
                         className={`toggle-button ${isToggled && "toggle-button-transformed"}`}

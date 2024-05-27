@@ -291,7 +291,15 @@ main {
         justify-content: space-between;
     }
 
+    .center-panel {
+        width: 100%;
+    }
+
     .right-panel {
+        display: none;
+    }
+
+    .left-panel {
         display: none;
     }
 

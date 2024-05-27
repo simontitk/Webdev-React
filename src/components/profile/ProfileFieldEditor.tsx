@@ -1,19 +1,22 @@
 import { useState } from "react";
-import { User } from "../../interfaces/interfaces";
+import { User, UserErrors } from "../../interfaces/interfaces";
 
 interface ProfileFieldEditorProps {
     name: string,
-    field: keyof User,
+    field: "first_name" | "last_name" | "email" | "phone" | "city" | "street" | "password" | "payment_method",
     editedValues: User,
+    errors: UserErrors,
+    hideInfo?: boolean,
     handleChange: React.ChangeEventHandler<HTMLInputElement>
 
 }
 
-export default function ProfileFieldEditor({name, field, editedValues, handleChange }: ProfileFieldEditorProps) {
+export default function ProfileFieldEditor({name, field, editedValues, errors, hideInfo=false, handleChange }: ProfileFieldEditorProps) {
 
     const [isEditing, setIsEditing] = useState<boolean>(false);
 
     const image = (isEditing) ? "checkbox" : "edit";
+    const displayedValue = (hideInfo) ? "*".repeat(editedValues[field].length)  : editedValues[field];
 
     function handleBlur() {
         setTimeout(() => {
@@ -23,7 +26,7 @@ export default function ProfileFieldEditor({name, field, editedValues, handleCha
 
     return (
         <div className="profile-field-editor">
-            <h2>{name}</h2>
+            <h3>{name}</h3>
             <div className="profile-info-display">
                 {isEditing ? 
                     <input 
@@ -36,10 +39,15 @@ export default function ProfileFieldEditor({name, field, editedValues, handleCha
                         name={field}>
                     </input>
                         : 
-                    <span className="profile-info-value profile-info"> { editedValues[field] } </span>
+                    <span className="profile-info-value profile-info"> {displayedValue} </span>
                 }
                 <img src={`icons/${image}.png`} width={30} height={30} onClick={()=>setIsEditing(true)} />
             </div>
+            {errors[field] && 
+                <div className="profile-error-display">
+                    {errors[field]}
+                </div>
+            }
         </div>
     );
 }
