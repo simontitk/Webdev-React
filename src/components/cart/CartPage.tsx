@@ -8,7 +8,7 @@ export default function CartPage() {
 
     const { cart } = useContext(CartContext);
     const { user } = useContext(UserContext);
-    const totalPrice = cart.map(item => item.quantity * item.product.price).reduce((sum,price) => sum+price, 0)
+    const totalPrice = cart.map(item => item.quantity * item.product.price).reduce((sum,price) => sum+price, 0).toFixed(2)
 
 
     function sendOrder() {
@@ -53,8 +53,9 @@ export default function CartPage() {
                             <button className="button" role="button">Continue Shopping</button>
                         </Link>
                         <button 
-                            className={!(cart.length > 0) ? "disabled-button" : "button"} 
-                            disabled={!(cart.length > 0)} 
+                            className={(!user || !(cart.length > 0)) ? "disabled-button" : "button"} 
+                            disabled={(!user || !(cart.length > 0))} 
+                            title={(!user) ? "Please login to checkout" : ""} 
                             role="button" 
                             onClick={sendOrder}>
                             Checkout

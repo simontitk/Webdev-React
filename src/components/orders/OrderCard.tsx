@@ -28,7 +28,7 @@ export default function OrderCard({totalPrice, orderDate, orderProducts}: OrderC
         <div className="order-card">
             <div className="order-card-header">
                 <div className="order-date">Ordered: <strong>{dateFormat}</strong></div>
-                <div className="order-price">Total: <strong>{totalPrice} DKK</strong></div>
+                <div className="order-price">Total: <strong>{totalPrice.toFixed(2)} DKK</strong></div>
                 <button className="order-collapse" onClick={() => setIsToggled(!isToggled)}>
                     See details
                     <img 
