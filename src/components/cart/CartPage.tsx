@@ -8,6 +8,7 @@ export default function CartPage() {
 
     const { cart } = useContext(CartContext);
     const { user } = useContext(UserContext);
+    const itemCount = cart.map(item => item.quantity).reduce((quant,sum)=>quant+sum, 0);
 
     const { addMessage } = useContext(MessageContext);
     const totalPrice = cart.map(item => item.quantity * item.product.price).reduce((sum,price) => sum+price, 0).toFixed(2)
@@ -36,7 +37,7 @@ export default function CartPage() {
                 <div className="primary-container">
                     <div className="header-filler"></div>
                     <div className="top-cart-container">
-                        Your Shopping Cart
+                        Your Shopping Cart {` (${itemCount} item${itemCount === 1 ? "" : "s"})`}
                     </div>
                     <div className="middle-cart-container">
                         {cart.sort((i1, i2) => i1.pid - i2.pid).map(item => (
