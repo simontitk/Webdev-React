@@ -128,6 +128,24 @@ li {
     max-width: 150px;
 }
 
+.cart-link {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+}
+
+
+.cart-counter {
+    font-size: 12px;
+    background-color: #365486;
+    border-radius: 20px;
+    padding: 2px;
+    min-width: 20px;
+    max-height: 20px;
+    text-align: center;
+}
+
+
 
 /*--------------- MAIN PANELS -----------------*/
 
