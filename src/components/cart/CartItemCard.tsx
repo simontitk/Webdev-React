@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { CartContext, UserContext } from "../../GlobalContext";
+import { CartContext, MessageContext, UserContext } from "../../GlobalContext";
 import { removeCartItem, updateCartItem } from "../../services/cartItemService";
 import { CartItem, Product } from "../../interfaces/interfaces";
 import "./cart.css";
@@ -12,6 +12,7 @@ export default function CartItemCard({item}: CartItemCardProps) {
 
         const { cart, setCart } = useContext(CartContext);
         const { user } = useContext(UserContext);
+        const { addMessage } = useContext(MessageContext);
 
         return (
             <div className="basket-item-row">
@@ -37,7 +38,10 @@ export default function CartItemCard({item}: CartItemCardProps) {
             <div className="basket-item-space"></div>
             <div className="basket-item-price-container">
                 <span className="basket-item-price">{item.product.price}</span>
-                <button className="button-delete" role="button" onClick={() => removeCartItem(item.product, cart, setCart, user?.id)}>delete</button>
+                <button className="button-delete" role="button" onClick={() => {
+                    removeCartItem(item.product, cart, setCart, user?.id);
+                    addMessage(`${item.product.name} removed from cart.`, "success")
+                }}>delete</button>
             </div>
             </div>
         )
