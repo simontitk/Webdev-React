@@ -1,7 +1,7 @@
 import { CartItem, Product } from "../interfaces/interfaces";
 import Cookies from 'js-cookie';
 
-    
+
 export function addCartItem(product: Product, quantity: number, cart: CartItem[], setCart: Function, uid?: number ) {
 
     if (uid !== undefined) {
@@ -15,8 +15,9 @@ export function addCartItem(product: Product, quantity: number, cart: CartItem[]
         .catch(err => console.log(err));
     }
     else {
-        const newCartItem: CartItem = {pid: product.id, quantity: quantity, product: product}; 
-        const newCart = [...cart.filter(i => i.pid !== product.id), newCartItem]
+        const oldQuantity: number = cart.find(i => i.pid === product.id)?.quantity || 0;
+        const newCartItem: CartItem = {pid: product.id, quantity: quantity + oldQuantity, product: product}; 
+        const newCart = [...cart.filter(i => i.pid !== product.id), newCartItem];
         setCart(newCart);
         Cookies.set("cart", JSON.stringify(newCart));
     }
@@ -41,8 +42,8 @@ export function removeCartItem(product: Product, cart: CartItem[], setCart: Func
 
     }
 }
- 
- 
+
+
 export function updateCartItem(product: Product, quantity: number, cart: CartItem[], setCart: Function, uid?: number) {
     if (uid !== undefined) {
         fetch(`http://localhost:3000/cart_items/${uid}`, {
@@ -58,5 +59,6 @@ export function updateCartItem(product: Product, quantity: number, cart: CartIte
         const newCartItem: CartItem = {pid: product.id, quantity: quantity, product: product}; 
         const newCart = [...cart.filter(i => i.pid !== product.id), newCartItem];
         setCart(newCart);
-        Cookies.set("cart", JSON.stringify(newCart));    }
+        Cookies.set("cart", JSON.stringify(newCart));
+    }
 }
